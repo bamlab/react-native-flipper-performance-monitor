@@ -7,6 +7,10 @@ Only Android is supported for now.
 
 ## Install
 
+### Flipper
+
+Search for `rn-perf-monitor` in the list of plugins.
+
 ### Install Android plugin
 
 The project is not published on Maven yet, but you can install it as a local dependency:
