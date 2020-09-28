@@ -1,0 +1,15 @@
+
+{
+  "name": "react-native-startup-trace",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "keywords": [
+    "react-native"
+  ],
+  "author": "",
+  "license": "MIT",
+  "peerDependencies": {
+    "react-native": "^0.61.3"
+  }
+}
