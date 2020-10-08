@@ -1,7 +1,7 @@
 {
   "name": "react-native-startup-trace",
   "title": "React Native Startup Trace",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "description": "Measure RN app startup trace with Firebase performance",
   "main": "index.js",
   "files": [
@@ -13,8 +13,8 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bamlab/react-native-performance.git",
-    "baseUrl": "https://github.com/bamlab/react-native-performance"
+    "url": "https://github.com/bamlab/react-native-performance.git",
+    "directory": "react-native-startup-trace"
   },
   "keywords": [
     "react-native"
