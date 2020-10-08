@@ -1,0 +1,127 @@
+// android/build.gradle
+
+import io.invertase.gradle.common.PackageJson
+
+buildscript {
+    // The Android Gradle plugin is only required when opening the android folder stand-alone.
+    // This avoids unnecessary downloads and potential conflicts when the library is included as a
+    // module dependency in an application project.
+    // ref: https://docs.gradle.org/current/userguide/tutorial_using_tasks.html#sec:build_script_external_dependencies
+    if (project == rootProject) {
+        repositories {
+            google()
+            jcenter()
+        }
+        dependencies {
+            classpath 'com.android.tools.build:gradle:3.4.1'
+        }
+    }
+}
+
+plugins {
+  id "io.invertase.gradle.build" version "1.4"
+}
+
+apply plugin: 'com.android.library'
+
+// based on:
+//
+// * https://github.com/facebook/react-native/blob/0.60-stable/template/android/build.gradle
+//   original location:
+//   - https://github.com/facebook/react-native/blob/0.58-stable/local-cli/templates/HelloWorld/android/build.gradle
+//
+// * https://github.com/facebook/react-native/blob/0.60-stable/template/android/app/build.gradle
+//   original location:
+//   - https://github.com/facebook/react-native/blob/0.58-stable/local-cli/templates/HelloWorld/android/app/build.gradle
+
+def DEFAULT_COMPILE_SDK_VERSION = 28
+def DEFAULT_BUILD_TOOLS_VERSION = '28.0.3'
+def DEFAULT_MIN_SDK_VERSION = 16
+def DEFAULT_TARGET_SDK_VERSION = 28
+
+def safeExtGet(prop, fallback) {
+    rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
+}
+
+android {
+    compileSdkVersion safeExtGet('compileSdkVersion', DEFAULT_COMPILE_SDK_VERSION)
+    buildToolsVersion safeExtGet('buildToolsVersion', DEFAULT_BUILD_TOOLS_VERSION)
+    defaultConfig {
+        minSdkVersion safeExtGet('minSdkVersion', DEFAULT_MIN_SDK_VERSION)
+        targetSdkVersion safeExtGet('targetSdkVersion', DEFAULT_TARGET_SDK_VERSION)
+        versionCode 1
+        versionName "1.0"
+    }
+    lintOptions {
+        abortOnError false
+    }
+}
+
+repositories {
+    // ref: https://www.baeldung.com/maven-local-repository
+    mavenLocal()
+    maven {
+        // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+        url "$rootDir/../node_modules/react-native/android"
+    }
+    maven {
+        // Android JSC is installed from npm
+        url "$rootDir/../node_modules/jsc-android/dist"
+    }
+    google()
+    jcenter()
+}
+
+// Copy paste from firebase modules
+def appProject
+if (findProject(':@react-native-firebase_app')) {
+  appProject = project(':@react-native-firebase_app')
+} else if (findProject(':react-native-firebase_app')) {
+  appProject = project(':react-native-firebase_app')
+} else {
+  throw new GradleException('Could not find the react-native-firebase/app package, have you installed it?')
+}
+def packageJson = PackageJson.getForProject(project)
+def appPackageJson = PackageJson.getForProject(appProject)
+def firebaseBomVersion = appPackageJson['sdkVersions']['android']['firebase']
+def jsonMinSdk = appPackageJson['sdkVersions']['android']['minSdk']
+def jsonTargetSdk = appPackageJson['sdkVersions']['android']['targetSdk']
+def jsonCompileSdk = appPackageJson['sdkVersions']['android']['compileSdk']
+def jsonBuildTools = appPackageJson['sdkVersions']['android']['buildTools']
+def coreVersionDetected = appPackageJson['version']
+def coreVersionRequired = packageJson['peerDependencies'][appPackageJson['name']]
+// Only log after build completed so log warning appears at the end
+if (coreVersionDetected != coreVersionRequired) {
+  gradle.buildFinished {
+    project.logger.warn("ReactNativeFirebase WARNING: NPM package '${packageJson['name']}' depends on '${appPackageJson['name']}' v${coreVersionRequired} but found v${coreVersionDetected}, this might cause build issues or runtime crashes.")
+  }
+}
+
+project.ext {
+  set('react-native', [
+    versions: [
+      android : [
+        minSdk    : jsonMinSdk,
+        targetSdk : jsonTargetSdk,
+        compileSdk: jsonCompileSdk,
+        // optional as gradle.buildTools comes with one by default
+        // overriding here though to match the version RN uses
+        buildTools: jsonBuildTools
+      ],
+
+      firebase: [
+        bom: firebaseBomVersion,
+      ],
+    ],
+  ])
+}
+// Copy paste from firebase modules
+
+dependencies {
+    //noinspection GradleDynamicVersion
+    implementation 'com.facebook.react:react-native:+'  // From node_modules
+
+    // Should come from react-native-firebase installation
+    implementation platform("com.google.firebase:firebase-bom:${ReactNative.ext.getVersion("firebase", "bom")}")
+    implementation "com.google.firebase:firebase-perf"
+}
