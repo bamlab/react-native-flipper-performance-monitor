@@ -1,7 +1,7 @@
 {
   "name": "react-native-startup-trace",
   "title": "React Native Startup Trace",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Measure RN app startup trace with Firebase performance",
   "main": "index.js",
   "files": [
