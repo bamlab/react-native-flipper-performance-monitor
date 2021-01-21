@@ -1,4 +1,4 @@
-package tech.bam.rnperformance;
+package tech.bam.rnperformance.startuptrace;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
