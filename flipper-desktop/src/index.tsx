@@ -1,10 +1,11 @@
-import React from 'react';
-import {FlipperPlugin, styled, colors, FlexRow, produce} from 'flipper';
-import {Button, Typography} from '@material-ui/core';
-import {GfxInfo} from './GfxInfo';
-import {Table} from './Table';
-import {Chart} from './Chart';
-import {CircularProgressWithLabel} from './CircularProgressWithLabel';
+import React from "react";
+import { FlipperPlugin, styled, colors, FlexRow, produce } from "flipper";
+
+import { Button, Typography } from "@material-ui/core";
+import { GfxInfo } from "./GfxInfo";
+import { Table } from "./Table";
+import { Chart } from "./Chart";
+import { CircularProgressWithLabel } from "./CircularProgressWithLabel";
 
 type State = {};
 
@@ -23,6 +24,15 @@ const round = (n: number, decimals: number) => {
   return Math.floor(n * power) / power;
 };
 
+const ScrollContainer = styled("div")<{ scrollable: boolean }>(
+  ({ scrollable }) => ({
+    overflow: scrollable ? "auto" : "hidden",
+    flex: "auto",
+    flexDirection: "column",
+    display: "flex",
+  })
+);
+
 export default class PerfMonitor extends FlipperPlugin<
   State,
   any,
@@ -30,11 +40,11 @@ export default class PerfMonitor extends FlipperPlugin<
 > {
   static Container = styled(FlexRow)({
     backgroundColor: colors.macOSTitleBarBackgroundBlur,
-    flexWrap: 'wrap',
-    alignItems: 'flex-start',
-    alignContent: 'flex-start',
+    flexWrap: "wrap",
+    alignItems: "flex-start",
+    alignContent: "flex-start",
     flexGrow: 1,
-    overflow: 'scroll',
+    overflow: "scroll",
   });
 
   static defaultPersistedState: PersistedState = {
@@ -44,9 +54,9 @@ export default class PerfMonitor extends FlipperPlugin<
   static persistedStateReducer<PersistedState>(
     persistedState: PersistedState,
     method: string,
-    payload: any,
+    payload: any
   ) {
-    return produce(persistedState, ({measures}) => {
+    return produce(persistedState, ({ measures }) => {
       measures.push(payload);
     });
   }
@@ -58,46 +68,46 @@ export default class PerfMonitor extends FlipperPlugin<
   };
 
   startMeasuring = () => {
-    this.setState({isMeasuring: true});
-    this.props.setPersistedState({measures: []});
-    this.client.call('startMeasuring');
-    this.gfxInfo = new GfxInfo({androidPackage: 'com.testperfmonitor'});
-    this.gfxInfo.addMeasureMarker('Start');
+    this.setState({ isMeasuring: true });
+    this.props.setPersistedState({ measures: [] });
+    this.client.call("startMeasuring");
+    this.gfxInfo = new GfxInfo({ androidPackage: "com.testperfmonitor" });
+    this.gfxInfo.addMeasureMarker("Start");
   };
 
   stopMeasuring = async () => {
-    this.client.call('stopMeasuring');
+    this.client.call("stopMeasuring");
     this.gfxInfo.report();
-    this.setState({isMeasuring: false});
+    this.setState({ isMeasuring: false });
   };
 
   getMeasures = () => {
     const {
-      persistedState: {measures},
+      persistedState: { measures },
     } = this.props;
     // First measure is usually 0 regardless of performance
     return measures.slice(1);
   };
 
-  getFPSGraphData = (key: 'JS' | 'UI') => {
+  getFPSGraphData = (key: "JS" | "UI") => {
     return this.getMeasures().map(
-      (measure) => (measure[key] / measure.expected) * 60,
+      (measure) => (measure[key] / measure.expected) * 60
     );
   };
 
   getFrameCount = () => {
     return this.getMeasures().reduce(
-      ({UI, JS, expected}, measure) => ({
+      ({ UI, JS, expected }, measure) => ({
         UI: UI + measure.UI,
         JS: JS + measure.JS,
         expected: expected + measure.expected,
       }),
-      {UI: 0, JS: 0, expected: 0},
+      { UI: 0, JS: 0, expected: 0 }
     );
   };
 
   getAverageFPS = () => {
-    const {UI, JS, expected} = this.getFrameCount();
+    const { UI, JS, expected } = this.getFrameCount();
 
     return {
       UI: (UI * 60) / expected,
@@ -106,12 +116,12 @@ export default class PerfMonitor extends FlipperPlugin<
   };
 
   getJSDeadlockTime = () => {
-    const {locked, total} = this.getMeasures().reduce(
-      ({locked, total}, {JS, expected}) => ({
+    const { locked, total } = this.getMeasures().reduce(
+      ({ locked, total }, { JS, expected }) => ({
         locked: locked + (JS < 1 ? expected : 0),
         total: total + expected,
       }),
-      {locked: 0, total: 0},
+      { locked: 0, total: 0 }
     );
 
     return {
@@ -125,13 +135,13 @@ export default class PerfMonitor extends FlipperPlugin<
     const jsLock = this.getJSDeadlockTime();
 
     return [
-      {title: 'Average JS FPS', value: round(averageFPS.JS, 1)},
-      {title: 'Average UI FPS', value: round(averageFPS.UI, 1)},
+      { title: "Average JS FPS", value: round(averageFPS.JS, 1) },
+      { title: "Average UI FPS", value: round(averageFPS.UI, 1) },
       {
-        title: 'JS  threadlock',
+        title: "JS  threadlock",
         value: `${round(jsLock.time, 3)}s (${round(
           jsLock.percentage * 100,
-          2,
+          2
         )}%)`,
       },
     ];
@@ -145,14 +155,16 @@ export default class PerfMonitor extends FlipperPlugin<
           color="primary"
           disabled={this.state.isMeasuring}
           onClick={this.startMeasuring}
-          style={{marginBottom: 10}}>
+          style={{ marginBottom: 10 }}
+        >
           Start
         </Button>
         <Button
           variant="contained"
           color="primary"
           disabled={!this.state.isMeasuring}
-          onClick={this.stopMeasuring}>
+          onClick={this.stopMeasuring}
+        >
           Stop
         </Button>
       </>
@@ -173,12 +185,13 @@ export default class PerfMonitor extends FlipperPlugin<
       <>
         <div
           style={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: '100%',
-            display: 'flex',
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            display: "flex",
             marginBottom: 20,
-          }}>
+          }}
+        >
           <CircularProgressWithLabel size={80} value={this.getScore()} />
         </div>
         <Table rows={this.getReportRows()} />
@@ -188,25 +201,26 @@ export default class PerfMonitor extends FlipperPlugin<
 
   render() {
     return (
-      <>
+      <ScrollContainer scrollable>
         <Typography
           variant="h3"
           component="h3"
-          style={{textAlign: 'center', width: '100%', paddingBottom: 20}}>
-          Performance
+          style={{ textAlign: "center", width: "100%", paddingBottom: 20 }}
+        >
+          Performance Dev
         </Typography>
         {!this.state.isMeasuring && this.getMeasures().length > 0
           ? this.renderReport()
           : null}
         {this.renderControls()}
         <Chart
-          fps={this.getFPSGraphData('JS')}
+          fps={this.getFPSGraphData("JS")}
           height={350}
           title="JS FPS"
           threshold={59}
         />
         <Chart
-          fps={this.getFPSGraphData('UI')}
+          fps={this.getFPSGraphData("UI")}
           height={350}
           title="UI FPS"
           threshold={10}
@@ -214,7 +228,7 @@ export default class PerfMonitor extends FlipperPlugin<
         {/* <DetailSidebar>
           {typeof selectedID === 'string' && renderSidebar(persistedState[selectedID])}
         </DetailSidebar> */}
-      </>
+      </ScrollContainer>
     );
   }
 }
