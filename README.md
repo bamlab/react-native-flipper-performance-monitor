@@ -41,3 +41,11 @@ import tech.bam.rnperformance.RNPerfMonitorPlugin;
 
 client.addPlugin(new RNPerfMonitorPlugin(reactInstanceManager));
 ```
+
+## Contributing to flipper Desktopp
+
+1. Clone the repository.
+2. Add path to your local `react-native-performance` folder in `~/.flipper/config.json` as shown on [the flipper docs](https://fbflipper.com/docs/extending/loading-custom-plugins/)
+3. Run `yarn watch` inside `flipper-desktop`
+4. Connect your debug app with the flipper android plugin installed.
+5. You should now see your plugin appear in Flipper.
