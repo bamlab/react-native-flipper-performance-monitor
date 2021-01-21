@@ -1,6 +1,6 @@
 //  Created by react-native-create-bridge
 
-package tech.bam.rnperformance;
+package tech.bam.rnperformance.startuptrace;
 
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;

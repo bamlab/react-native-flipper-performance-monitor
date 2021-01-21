@@ -32,7 +32,7 @@ In `ios/AppDelegate.m`:
 In `MainApplication.java`
 
 ```java
-import tech.bam.rnperformance.StartupTraceModule;
+import tech.bam.rnperformance.startuptrace.StartupTraceModule;
 
 	...
 
