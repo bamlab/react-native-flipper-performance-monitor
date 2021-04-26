@@ -74,3 +74,11 @@ You should see something similar to:
 ```
 FirebasePerformance: Logging trace metric - STARTUP_JS 2423.1650ms
 ```
+
+## Usage with jest
+
+Import the mock in the setupFiles of your `jest.config.js`:
+
+```javascript
+setupFiles: ["./node_modules/react-native-startup-trace/jest.setup.js"];
+```
