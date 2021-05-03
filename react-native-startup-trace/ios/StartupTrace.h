@@ -9,7 +9,7 @@
 #import “React/RCTBridgeModule.h” // Required when used as a Pod in a Swift project
 #endif
 
-@import FirebasePerformance;
+#import <Firebase/Firebase.h>
 
 @interface StartupPerformanceTrace : NSObject <RCTBridgeModule>
 
