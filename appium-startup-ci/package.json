@@ -1,0 +1,25 @@
+{
+  "name": "ntc-appium-tests",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest appium.test.ts --maxConcurrency=1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jest": "^26.0.3",
+    "jest-image-snapshot": "^4.0.2",
+    "ts-jest": "^26.1.1",
+    "typescript": "^3.9.6",
+    "wd": "^1.12.1",
+    "webdriverio": "^6.1.22"
+  },
+  "dependencies": {
+    "appcenter-cli": "^2.6.1",
+    "appium": "^1.17.1",
+    "jest": "^26.1.0",
+    "shelljs": "^0.8.4"
+  }
+}
