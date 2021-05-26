@@ -21,12 +21,13 @@ const A_LOT_OF_TIME = 10 * TEN_MINUTES;
 jest.setTimeout(A_LOT_OF_TIME);
 expect.extend({ toMatchImageSnapshot });
 
-const shell = require('shelljs');
-const runCommand = (command: string) =>
-  shell.exec(command).stdout;
+const shell = require("shelljs");
+const runCommand = (command: string) => shell.exec(command).stdout;
 
-const stopApp = (bundleId: string) => runCommand(`adb shell am force-stop ${bundleId}`);
-const startApp = (bundleId: string) => runCommand(`adb shell monkey -p ${bundleId} 1`);
+const stopApp = (bundleId: string) =>
+  runCommand(`adb shell am force-stop ${bundleId}`);
+const startApp = (bundleId: string) =>
+  runCommand(`adb shell monkey -p ${bundleId} 1`);
 
 interface Capabilities {
   appWaitActivity?: string;
@@ -52,52 +53,68 @@ const getAppOptions = (bundleId: string, capabilities: Capabilities) => ({
 });
 
 interface App {
-  appName: string,
+  appName: string;
   bundleId: string;
   capabilities?: Capabilities;
   beforeRestart?: (driver: AppiumDriver) => Promise<any>;
   checkIsStarted: (driver: AppiumDriver) => Promise<any>;
-};
+}
 
-const STARTUP_TIMES: {[appName: string]: {
-  measures: number[],
-  average:  number
-}} = {};
+const STARTUP_TIMES: {
+  [appName: string]: {
+    measures: number[];
+    average: number;
+  };
+} = {};
 
 // Example of app
 const blankReactNative: App = {
   appName: "Blank RN app",
   bundleId: "com.blankapp",
-  checkIsStarted: (driver) => driver.findElementByText("Step One")
+  checkIsStarted: (driver) => driver.findElementByText("Step One"),
 };
 
 const APPS = [blankReactNative];
 
-
-test.each([blankReactNative])(`Measure %s startup`, async ({ appName, bundleId, capabilities, beforeRestart, checkIsStarted }: App) => {
-  console.log(`MEASURING ${appName}`);
-
-  const createDriver = async () => {
-    const client: webdriver.BrowserObject = await webdriver.remote(getAppOptions(bundleId, capabilities));
-    const driver = new AppiumDriver({ client, timeout: TIMEOUT, platform: "android" });
-    return driver;
-  };
-
-  const report = await runAppiumAverageStartupTimeTest({
-    bundleId: bundleId,
-    createDriver,
-    measureCount: 10,
+test.each(APPS)(
+  `Measure %s startup`,
+  async ({
+    appName,
+    bundleId,
+    capabilities,
     beforeRestart,
-    checkIsStarted
-  });
+    checkIsStarted,
+  }: App) => {
+    console.log(`MEASURING ${appName}`);
 
-  console.log(report);
+    const createDriver = async () => {
+      const client: webdriver.BrowserObject = await webdriver.remote(
+        getAppOptions(bundleId, capabilities)
+      );
+      const driver = new AppiumDriver({
+        client,
+        timeout: TIMEOUT,
+        platform: "android",
+      });
+      return driver;
+    };
 
-  STARTUP_TIMES[appName] = report;
+    const report = await runAppiumAverageStartupTimeTest({
+      bundleId: bundleId,
+      createDriver,
+      measureCount: 10,
+      beforeRestart,
+      checkIsStarted,
+    });
 
-  // Wait between tests to avoid some econnreset errors
-  await new Promise(resolve => setTimeout(resolve, 10000));
-});
+    console.log(report);
+
+    STARTUP_TIMES[appName] = report;
+
+    // Wait between tests to avoid some econnreset errors
+    await new Promise((resolve) => setTimeout(resolve, 10000));
+  }
+);
 
 afterAll(async () => {
   console.log(STARTUP_TIMES);
