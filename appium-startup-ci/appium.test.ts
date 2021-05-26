@@ -54,6 +54,7 @@ const getAppOptions = (bundleId: string, capabilities: Capabilities) => ({
 
 interface App {
   appName: string;
+  apkPath: string;
   bundleId: string;
   capabilities?: Capabilities;
   beforeRestart?: (driver: AppiumDriver) => Promise<any>;
@@ -71,6 +72,7 @@ const STARTUP_TIMES: {
 const blankReactNative: App = {
   appName: "Blank RN app",
   bundleId: "com.blankapp",
+  apkPath: "com.blankapp.apk",
   checkIsStarted: (driver) => driver.findElementByText("Step One"),
 };
 
@@ -80,6 +82,7 @@ test.each(APPS)(
   `Measure %s startup`,
   async ({
     appName,
+    apkPath,
     bundleId,
     capabilities,
     beforeRestart,
@@ -89,7 +92,7 @@ test.each(APPS)(
 
     const createDriver = async () => {
       const client: webdriver.BrowserObject = await webdriver.remote(
-        getAppOptions(bundleId, capabilities)
+        getAppOptions(apkPath, capabilities)
       );
       const driver = new AppiumDriver({
         client,
