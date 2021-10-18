@@ -1,4 +1,4 @@
-package tech.bam.rnperformance;
+package tech.bam.rnperformance.flipper;
 
 import android.os.Handler;
 
