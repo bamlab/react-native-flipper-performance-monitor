@@ -35,7 +35,7 @@ debugImplementation project(':flipper-plugin-rn-performance-android')
 Finally in `ReactNativeFlipper.java`, add:
 
 ```java
-import tech.bam.rnperformance.RNPerfMonitorPlugin;
+import tech.bam.rnperformance.flipper.RNPerfMonitorPlugin;
 
 ...
 
