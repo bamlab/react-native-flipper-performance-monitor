@@ -12,10 +12,10 @@
   "icon": "apps",
   "title": "RN Perf monitor",
   "description": "Alpha and experimental perf monitor for RN, like Lighthouse",
-  "homepage": "https://github.com/almouro/react-native-performance",
+  "homepage": "https://github.com/bamlab/react-native-performance",
   "repository": {
     "type": "git",
-    "url": "https://github.com/almouro/react-native-performance"
+    "url": "https://github.com/bamlab/react-native-performance"
   },
   "scripts": {
     "lint": "flipper-pkg lint",
