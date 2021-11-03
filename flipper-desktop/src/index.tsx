@@ -207,7 +207,7 @@ export default class PerfMonitor extends FlipperPlugin<
           component="h3"
           style={{ textAlign: "center", width: "100%", paddingBottom: 20 }}
         >
-          Performance Dev
+          Performance
         </Typography>
         {!this.state.isMeasuring && this.getMeasures().length > 0
           ? this.renderReport()
