@@ -2,7 +2,6 @@ import React from "react";
 import { FlipperPlugin, styled, colors, FlexRow, produce } from "flipper";
 
 import { Button, Typography } from "@material-ui/core";
-import { GfxInfo } from "./GfxInfo";
 import { Table } from "./Table";
 import { Chart } from "./Chart";
 import { CircularProgressWithLabel } from "./CircularProgressWithLabel";
@@ -61,8 +60,6 @@ export default class PerfMonitor extends FlipperPlugin<
     });
   }
 
-  gfxInfo: GfxInfo;
-
   state = {
     isMeasuring: false,
   };
@@ -71,13 +68,10 @@ export default class PerfMonitor extends FlipperPlugin<
     this.setState({ isMeasuring: true });
     this.props.setPersistedState({ measures: [] });
     this.client.call("startMeasuring");
-    this.gfxInfo = new GfxInfo({ androidPackage: "com.testperfmonitor" });
-    this.gfxInfo.addMeasureMarker("Start");
   };
 
   stopMeasuring = async () => {
     this.client.call("stopMeasuring");
-    this.gfxInfo.report();
     this.setState({ isMeasuring: false });
   };
 
