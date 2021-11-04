@@ -41,6 +41,37 @@ const Title = () => (
     Performance
   </Typography>
 );
+
+const Controls = ({
+  isMeasuring,
+  start,
+  stop,
+}: {
+  isMeasuring: boolean;
+  start: () => void;
+  stop: () => void;
+}) => (
+  <>
+    <Button
+      variant="contained"
+      color="primary"
+      disabled={isMeasuring}
+      onClick={start}
+      style={{ marginBottom: 10 }}
+    >
+      Start
+    </Button>
+    <Button
+      variant="contained"
+      color="primary"
+      disabled={!isMeasuring}
+      onClick={stop}
+    >
+      Stop
+    </Button>
+  </>
+);
+
 export default class PerfMonitor extends FlipperPlugin<
   State,
   any,
@@ -150,30 +181,6 @@ export default class PerfMonitor extends FlipperPlugin<
     ];
   };
 
-  renderControls = () => {
-    return (
-      <>
-        <Button
-          variant="contained"
-          color="primary"
-          disabled={this.state.isMeasuring}
-          onClick={this.startMeasuring}
-          style={{ marginBottom: 10 }}
-        >
-          Start
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          disabled={!this.state.isMeasuring}
-          onClick={this.stopMeasuring}
-        >
-          Stop
-        </Button>
-      </>
-    );
-  };
-
   getScore = () => {
     const averageFPS = this.getAverageFPS();
 
@@ -209,7 +216,11 @@ export default class PerfMonitor extends FlipperPlugin<
         {!this.state.isMeasuring && this.getMeasures().length > 0
           ? this.renderReport()
           : null}
-        {this.renderControls()}
+        <Controls
+          isMeasuring={this.state.isMeasuring}
+          start={this.startMeasuring}
+          stop={this.stopMeasuring}
+        />
         <Chart
           fps={this.getFPSGraphData("JS")}
           height={350}
