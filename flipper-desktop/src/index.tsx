@@ -32,6 +32,15 @@ const ScrollContainer = styled("div")<{ scrollable: boolean }>(
   })
 );
 
+const Title = () => (
+  <Typography
+    variant="h3"
+    component="h3"
+    style={{ textAlign: "center", width: "100%", paddingBottom: 20 }}
+  >
+    Performance
+  </Typography>
+);
 export default class PerfMonitor extends FlipperPlugin<
   State,
   any,
@@ -196,13 +205,7 @@ export default class PerfMonitor extends FlipperPlugin<
   render() {
     return (
       <ScrollContainer scrollable>
-        <Typography
-          variant="h3"
-          component="h3"
-          style={{ textAlign: "center", width: "100%", paddingBottom: 20 }}
-        >
-          Performance
-        </Typography>
+        <Title />
         {!this.state.isMeasuring && this.getMeasures().length > 0
           ? this.renderReport()
           : null}
