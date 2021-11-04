@@ -219,9 +219,6 @@ export default class PerfMonitor extends FlipperPlugin<
           title="UI FPS"
           threshold={10}
         />
-        {/* <DetailSidebar>
-          {typeof selectedID === 'string' && renderSidebar(persistedState[selectedID])}
-        </DetailSidebar> */}
       </ScrollContainer>
     );
   }
