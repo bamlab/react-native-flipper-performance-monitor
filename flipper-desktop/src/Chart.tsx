@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect } from "react";
+import React, { useMemo, useEffect, ComponentProps } from "react";
 import ReactApexChart from "react-apexcharts";
 import ApexCharts from "apexcharts";
 
@@ -36,7 +36,7 @@ export const Chart = ({
     ]);
   }, [fps]);
 
-  const options = useMemo(
+  const options = useMemo<ComponentProps<typeof ReactApexChart>["options"]>(
     () => ({
       chart: {
         id: title,
@@ -70,6 +70,7 @@ export const Chart = ({
         },
       },
       xaxis: {
+        // @ts-ignore "time" is definitely an option
         type: "time",
       },
       yaxis: {
