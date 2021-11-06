@@ -1,22 +1,15 @@
 import React, { useState } from "react";
-import { FlipperPlugin, styled, colors, FlexRow, produce } from "flipper";
-
+import {
+  createState,
+  PluginClient,
+  styled,
+  usePlugin,
+  useValue,
+} from "flipper-plugin";
 import { Button, Typography } from "@material-ui/core";
 import { Table } from "./Table";
 import { Chart } from "./Chart";
 import { CircularProgressWithLabel } from "./CircularProgressWithLabel";
-
-type State = {};
-
-type Data = {
-  UI: number;
-  JS: number;
-  expected: number;
-};
-
-type PersistedState = {
-  measures: Array<Data>;
-};
 
 const round = (n: number, decimals: number) => {
   const power = Math.pow(10, decimals);
@@ -205,58 +198,54 @@ const PerfMonitorView = ({
   );
 };
 
-export default class PerfMonitor extends FlipperPlugin<
-  State,
-  any,
-  PersistedState
-> {
-  static Container = styled(FlexRow)({
-    backgroundColor: colors.macOSTitleBarBackgroundBlur,
-    flexWrap: "wrap",
-    alignItems: "flex-start",
-    alignContent: "flex-start",
-    flexGrow: 1,
-    overflow: "scroll",
+type Events = {
+  addRecord: Measure;
+};
+
+type Methods = {
+  startMeasuring: () => Promise<void>;
+  stopMeasuring: () => Promise<void>;
+};
+
+export function plugin(client: PluginClient<Events, Methods>) {
+  const measures = createState<Measure[]>([], {
+    persist: "measures",
   });
 
-  static defaultPersistedState: PersistedState = {
-    measures: [],
-  };
-
-  static persistedStateReducer<PersistedState>(
-    persistedState: PersistedState,
-    method: string,
-    payload: any
-  ) {
-    return produce(persistedState, ({ measures }: { measures: Measure[] }) => {
-      measures.push(payload);
+  client.onMessage("addRecord", (measure) => {
+    measures.update((draft) => {
+      draft.push(measure);
     });
-  }
+  });
 
-  startMeasuring = () => {
-    this.props.setPersistedState({ measures: [] });
-    this.client.call("startMeasuring");
+  const startMeasuring = () => {
+    measures.update((draft) => {
+      draft = [];
+    });
+    client.send("startMeasuring", undefined);
   };
 
-  stopMeasuring = async () => {
-    this.client.call("stopMeasuring");
+  const stopMeasuring = async () => {
+    client.send("stopMeasuring", undefined);
   };
 
-  getMeasures = () => {
-    const {
-      persistedState: { measures },
-    } = this.props;
-    // First measure is usually 0 regardless of performance
-    return measures.slice(1);
+  return {
+    measures: measures,
+    startMeasuring,
+    stopMeasuring,
   };
+}
 
-  render() {
-    return (
-      <PerfMonitorView
-        measures={this.getMeasures()}
-        startMeasuring={this.startMeasuring}
-        stopMeasuring={this.stopMeasuring}
-      />
-    );
-  }
+export function Component() {
+  const instance = usePlugin(plugin);
+  // First measure is usually 0 regardless of performance
+  const measures = useValue(instance.measures).slice(1);
+
+  return (
+    <PerfMonitorView
+      measures={measures}
+      startMeasuring={instance.startMeasuring}
+      stopMeasuring={instance.stopMeasuring}
+    />
+  );
 }
