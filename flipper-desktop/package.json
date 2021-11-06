@@ -24,7 +24,8 @@
     "watch": "flipper-pkg bundle --watch"
   },
   "peerDependencies": {
-    "flipper": "latest"
+    "flipper": "latest",
+    "flipper-plugin": "*"
   },
   "devDependencies": {
     "@types/react": "latest",
