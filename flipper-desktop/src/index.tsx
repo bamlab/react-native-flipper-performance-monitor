@@ -72,7 +72,13 @@ const Controls = ({
   </>
 );
 
-const Report = ({ measures }) => {
+interface Measure {
+  UI: number;
+  JS: number;
+  expected: number;
+}
+
+const Report = ({ measures }: { measures: Measure[] }) => {
   const getFrameCount = () => {
     return measures.reduce(
       ({ UI, JS, expected }, measure) => ({
@@ -175,7 +181,7 @@ export default class PerfMonitor extends FlipperPlugin<
     method: string,
     payload: any
   ) {
-    return produce(persistedState, ({ measures }) => {
+    return produce(persistedState, ({ measures }: { measures: Measure[] }) => {
       measures.push(payload);
     });
   }
