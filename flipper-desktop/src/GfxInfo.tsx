@@ -30,51 +30,51 @@ export class GfxInfo {
   androidPackage: string;
   measures: MarkerMeasure[];
 
-  constructor({androidPackage}: {androidPackage: string}) {
+  constructor({ androidPackage }: { androidPackage: string }) {
     this.androidPackage = androidPackage;
     this.measures = [];
   }
 
   private async executeCommand(command: string): Promise<string> {
     return new Promise((resolve, reject) =>
-      require('child_process').exec(command, function (err, stdout, stderr) {
+      require("child_process").exec(command, function (err, stdout) {
         if (err) return reject(err);
         return resolve(stdout);
-      }),
+      })
     );
   }
 
   private async resetDumpSys(): Promise<void> {
     await this.executeCommand(
-      `adb shell dumpsys gfxinfo ${this.androidPackage} reset`,
+      `adb shell dumpsys gfxinfo ${this.androidPackage} reset`
     );
   }
 
   private async getGfxInfo(): Promise<string> {
     return this.executeCommand(
-      `adb shell dumpsys gfxinfo ${this.androidPackage}`,
+      `adb shell dumpsys gfxinfo ${this.androidPackage}`
     );
   }
 
   private parseHistogram(histogramText: string): HistogramValue[] {
-    return histogramText.split(' ').map((renderTimeText) => {
+    return histogramText.split(" ").map((renderTimeText) => {
       const [renderingTime, frameCount] = renderTimeText
-        .split('ms=')
+        .split("ms=")
         .map((text) => parseInt(text, 10));
-      return {renderingTime, frameCount};
+      return { renderingTime, frameCount };
     });
   }
 
   private getRenderingTimeMeasures(
-    histogram: HistogramValue[],
+    histogram: HistogramValue[]
   ): RenderingTimeMeasures {
-    const {totalFramesRendered, totalRenderTime} = histogram.reduce(
-      (aggregator, {renderingTime, frameCount}) => ({
+    const { totalFramesRendered, totalRenderTime } = histogram.reduce(
+      (aggregator, { renderingTime, frameCount }) => ({
         totalFramesRendered: aggregator.totalFramesRendered + frameCount,
         totalRenderTime:
           aggregator.totalRenderTime + frameCount * renderingTime,
       }),
-      {totalFramesRendered: 0, totalRenderTime: 0},
+      { totalFramesRendered: 0, totalRenderTime: 0 }
     );
 
     return {
@@ -84,20 +84,20 @@ export class GfxInfo {
   }
 
   private async measure(): Promise<Measure> {
-    const gfxOutput: {[name: string]: string} = (await this.getGfxInfo())
-      .split('\n')
+    const gfxOutput: { [name: string]: string } = (await this.getGfxInfo())
+      .split("\n")
       .reduce((values, line) => {
-        const [name, value] = line.split(': ');
-        return value !== undefined ? {...values, [name]: value} : values;
+        const [name, value] = line.split(": ");
+        return value !== undefined ? { ...values, [name]: value } : values;
       }, {});
 
     const jankyFrames = {
-      totalRendered: parseInt(gfxOutput['Total frames rendered'], 10),
-      count: parseInt(gfxOutput['Janky frames'], 10),
+      totalRendered: parseInt(gfxOutput["Total frames rendered"], 10),
+      count: parseInt(gfxOutput["Janky frames"], 10),
     };
 
     const renderingTime = this.getRenderingTimeMeasures(
-      this.parseHistogram(gfxOutput['HISTOGRAM']),
+      this.parseHistogram(gfxOutput["HISTOGRAM"])
     );
 
     return {
@@ -119,7 +119,7 @@ export class GfxInfo {
     markerName,
     measure: {
       jankyFrames,
-      renderingTime: {totalFramesRendered, totalRenderTime},
+      renderingTime: { totalFramesRendered, totalRenderTime },
     },
   }: MarkerMeasure) {
     console.log(`${markerName}:
@@ -127,17 +127,17 @@ Janky frames: ${jankyFrames.count}/${
       jankyFrames.totalRendered
     } (${roundToDecimal(
       (jankyFrames.count / jankyFrames.totalRendered) * 100,
-      2,
+      2
     )}%)
 Average rendering time: ${roundToDecimal(
       totalRenderTime / totalFramesRendered,
-      2,
+      2
     )}ms`);
   }
 
   private aggregateMeasures(): Measure {
     return this.measures.reduce(
-      (aggregator, {measure}) => ({
+      (aggregator, { measure }) => ({
         jankyFrames: {
           totalRendered:
             aggregator.jankyFrames.totalRendered +
@@ -162,7 +162,7 @@ Average rendering time: ${roundToDecimal(
           totalFramesRendered: 0,
           totalRenderTime: 0,
         },
-      },
+      }
     );
   }
 
@@ -170,7 +170,7 @@ Average rendering time: ${roundToDecimal(
     console.log(this.measures);
     this.measures.forEach(this.reportMeasure);
     this.reportMeasure({
-      markerName: 'Total',
+      markerName: "Total",
       measure: this.aggregateMeasures(),
     });
   }
