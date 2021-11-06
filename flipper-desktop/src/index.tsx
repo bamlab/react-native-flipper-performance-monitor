@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { FlipperPlugin, styled, colors, FlexRow, produce } from "flipper";
 
 import { Button, Typography } from "@material-ui/core";
@@ -158,6 +158,53 @@ const Report = ({ measures }: { measures: Measure[] }) => {
   );
 };
 
+const PerfMonitorView = ({
+  measures,
+  startMeasuring,
+  stopMeasuring,
+}: {
+  measures: Measure[];
+  startMeasuring: () => void;
+  stopMeasuring: () => void;
+}) => {
+  const [isMeasuring, setIsMeasuring] = useState(false);
+  const getFPSGraphData = (key: "JS" | "UI") => {
+    return measures.map((measure) => (measure[key] / measure.expected) * 60);
+  };
+
+  return (
+    <ScrollContainer scrollable>
+      <Title />
+      {!isMeasuring && measures.length > 0 ? (
+        <Report measures={measures} />
+      ) : null}
+      <Controls
+        isMeasuring={isMeasuring}
+        start={() => {
+          setIsMeasuring(true);
+          startMeasuring();
+        }}
+        stop={() => {
+          stopMeasuring();
+          setIsMeasuring(false);
+        }}
+      />
+      <Chart
+        fps={getFPSGraphData("JS")}
+        height={350}
+        title="JS FPS"
+        threshold={59}
+      />
+      <Chart
+        fps={getFPSGraphData("UI")}
+        height={350}
+        title="UI FPS"
+        threshold={10}
+      />
+    </ScrollContainer>
+  );
+};
+
 export default class PerfMonitor extends FlipperPlugin<
   State,
   any,
@@ -186,19 +233,13 @@ export default class PerfMonitor extends FlipperPlugin<
     });
   }
 
-  state = {
-    isMeasuring: false,
-  };
-
   startMeasuring = () => {
-    this.setState({ isMeasuring: true });
     this.props.setPersistedState({ measures: [] });
     this.client.call("startMeasuring");
   };
 
   stopMeasuring = async () => {
     this.client.call("stopMeasuring");
-    this.setState({ isMeasuring: false });
   };
 
   getMeasures = () => {
@@ -209,37 +250,13 @@ export default class PerfMonitor extends FlipperPlugin<
     return measures.slice(1);
   };
 
-  getFPSGraphData = (key: "JS" | "UI") => {
-    return this.getMeasures().map(
-      (measure) => (measure[key] / measure.expected) * 60
-    );
-  };
-
   render() {
     return (
-      <ScrollContainer scrollable>
-        <Title />
-        {!this.state.isMeasuring && this.getMeasures().length > 0 ? (
-          <Report measures={this.getMeasures()} />
-        ) : null}
-        <Controls
-          isMeasuring={this.state.isMeasuring}
-          start={this.startMeasuring}
-          stop={this.stopMeasuring}
-        />
-        <Chart
-          fps={this.getFPSGraphData("JS")}
-          height={350}
-          title="JS FPS"
-          threshold={59}
-        />
-        <Chart
-          fps={this.getFPSGraphData("UI")}
-          height={350}
-          title="UI FPS"
-          threshold={10}
-        />
-      </ScrollContainer>
+      <PerfMonitorView
+        measures={this.getMeasures()}
+        startMeasuring={this.startMeasuring}
+        stopMeasuring={this.stopMeasuring}
+      />
     );
   }
 }
