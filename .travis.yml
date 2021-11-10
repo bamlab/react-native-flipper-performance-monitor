@@ -1,0 +1,13 @@
+language: node_js
+before_install:
+  - cd flipper-desktop
+cache:
+  directories:
+    - ~/.npm
+notifications:
+  email: false
+node_js:
+  - "14"
+branches:
+  except:
+    - /^v\d+\.\d+\.\d+$/
