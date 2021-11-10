@@ -1,5 +1,7 @@
 # React Native Performance Monitor Flipper plugin
 
+[![Build Status](https://app.travis-ci.com/bamlab/react-native-performance.svg?branch=master)](https://app.travis-ci.com/bamlab/react-native-performance)
+
 Experimental for now, **likely to have breaking changes often.**
 Only Android is supported for now.
 
