@@ -17,7 +17,7 @@ export const CircularProgressWithLabel = (props: {
 
   return (
     <Box position="relative" display="inline-flex">
-      <CircularProgress variant="static" {...props} style={{ color }} />
+      <CircularProgress variant="determinate" {...props} style={{ color }} />
       <Box
         top={0}
         left={0}
