@@ -22,18 +22,28 @@
     "prepack": "flipper-pkg lint && flipper-pkg bundle",
     "build": "flipper-pkg bundle",
     "watch": "flipper-pkg bundle --watch",
-    "test": "yarn lint && prettier 'src/**/*.{ts,tsx}' --check && tsc"
+    "test": "yarn lint && prettier 'src/**/*.{ts,tsx}' --check && tsc && jest",
+    "postinstall": "patch-package"
   },
   "peerDependencies": {
     "flipper": "latest",
     "flipper-plugin": "*"
   },
   "devDependencies": {
+    "@testing-library/react": "^12.1.2",
+    "@types/jest": "^27.0.2",
     "@types/react": "latest",
     "@types/react-dom": "latest",
+    "@types/react-test-renderer": "^17.0.1",
     "flipper": "latest",
     "flipper-pkg": "latest",
+    "jest": "^27.3.1",
+    "jest-environment-jsdom": "^27.3.1",
+    "jest-mock-console": "^1.2.3",
+    "patch-package": "^6.4.7",
+    "postinstall-postinstall": "^2.1.0",
     "prettier": "^2.4.1",
+    "ts-jest": "^27.0.7",
     "typescript": "^4.4.4"
   },
   "dependencies": {

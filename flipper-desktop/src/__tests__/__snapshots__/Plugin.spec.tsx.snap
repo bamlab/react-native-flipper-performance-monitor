@@ -1,0 +1,155 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`displays FPS data and scoring 1`] = `"Performance0Average JS FPS0Average UI FPS60JS  threadlock0.506s (100%)StartStop"`;
+
+exports[`displays FPS data and scoring 2`] = `
+<body>
+  <div>
+    <div
+      class="css-1baaral"
+    >
+      <h3
+        class="MuiTypography-root MuiTypography-h3"
+        style="text-align: center; width: 100%; padding-bottom: 20px;"
+      >
+        Performance
+      </h3>
+      <div
+        style="justify-content: center; align-items: center; width: 100%; display: flex; margin-bottom: 20px;"
+      >
+        <div
+          class="MuiBox-root MuiBox-root-1"
+        >
+          <div
+            aria-valuenow="0"
+            class="MuiCircularProgress-root MuiCircularProgress-colorPrimary MuiCircularProgress-determinate"
+            role="progressbar"
+            style="width: 80px; height: 80px; transform: rotate(-90deg); color: rgb(255, 65, 54);"
+          >
+            <svg
+              class="MuiCircularProgress-svg"
+              viewBox="22 22 44 44"
+            >
+              <circle
+                class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate"
+                cx="44"
+                cy="44"
+                fill="none"
+                r="20.2"
+                stroke-width="3.6"
+                style="stroke-dasharray: 126.920; stroke-dashoffset: 126.920px;"
+              />
+            </svg>
+          </div>
+          <div
+            class="MuiBox-root MuiBox-root-2"
+          >
+            <div
+              class="MuiTypography-root MuiTypography-caption MuiTypography-colorTextSecondary"
+              style="font-size: 28px; color: rgb(255, 65, 54);"
+            >
+              0
+            </div>
+          </div>
+        </div>
+      </div>
+      <table
+        aria-label="simple table"
+        class="MuiTable-root"
+      >
+        <tbody
+          class="MuiTableBody-root"
+        >
+          <tr
+            class="MuiTableRow-root"
+          >
+            <th
+              class="MuiTableCell-root MuiTableCell-body"
+              role="cell"
+              scope="row"
+            >
+              Average JS FPS
+            </th>
+            <td
+              class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight"
+            >
+              0
+            </td>
+          </tr>
+          <tr
+            class="MuiTableRow-root"
+          >
+            <th
+              class="MuiTableCell-root MuiTableCell-body"
+              role="cell"
+              scope="row"
+            >
+              Average UI FPS
+            </th>
+            <td
+              class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight"
+            >
+              60
+            </td>
+          </tr>
+          <tr
+            class="MuiTableRow-root"
+          >
+            <th
+              class="MuiTableCell-root MuiTableCell-body"
+              role="cell"
+              scope="row"
+            >
+              JS  threadlock
+            </th>
+            <td
+              class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight"
+            >
+              0.506s (100%)
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary"
+        style="margin-bottom: 10px;"
+        tabindex="0"
+        type="button"
+      >
+        <span
+          class="MuiButton-label"
+        >
+          Start
+        </span>
+        <span
+          class="MuiTouchRipple-root"
+        />
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary Mui-disabled Mui-disabled"
+        disabled=""
+        tabindex="-1"
+        type="button"
+      >
+        <span
+          class="MuiButton-label"
+        >
+          Stop
+        </span>
+      </button>
+      <apex-charts
+        height="350"
+        options="[object Object]"
+        series=""
+        type="line"
+      />
+      <apex-charts
+        height="350"
+        options="[object Object]"
+        series=""
+        type="line"
+      />
+    </div>
+  </div>
+</body>
+`;
