@@ -33,3 +33,21 @@ test("displays FPS data and scoring", async () => {
   ).toMatchSnapshot();
   expect(renderer.baseElement).toMatchSnapshot();
 });
+
+test("clicking start should reset measures", () => {
+  const { renderer, sendEvent, instance } = TestUtils.renderPlugin(Plugin);
+
+  sendEvent("addRecord", {
+    JS: 30,
+    UI: 25,
+    expected: 30,
+  });
+  sendEvent("addRecord", {
+    JS: 0,
+    UI: 30,
+    expected: 30,
+  });
+
+  fireEvent.click(renderer.getByText("Start"));
+  expect(instance.measures.get()).toEqual([]);
+});

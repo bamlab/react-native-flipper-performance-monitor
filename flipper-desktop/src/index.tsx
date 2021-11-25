@@ -219,9 +219,7 @@ export function plugin(client: PluginClient<Events, Methods>) {
   });
 
   const startMeasuring = () => {
-    measures.update((draft) => {
-      draft = [];
-    });
+    measures.update(() => []);
     client.send("startMeasuring", undefined);
   };
 
