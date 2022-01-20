@@ -10,11 +10,7 @@ import { Button, Typography } from "@material-ui/core";
 import { Table } from "./Table";
 import { Chart } from "./Chart";
 import { CircularProgressWithLabel } from "./CircularProgressWithLabel";
-
-const round = (n: number, decimals: number) => {
-  const power = Math.pow(10, decimals);
-  return Math.floor(n * power) / power;
-};
+import { round } from "./utils/round";
 
 const ScrollContainer = styled("div")<{ scrollable: boolean }>(
   ({ scrollable }) => ({
