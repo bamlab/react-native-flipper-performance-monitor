@@ -32,6 +32,16 @@ const PerfMonitorView = ({
   stopMeasuring: () => void;
 }) => {
   const [isMeasuring, setIsMeasuring] = useState(false);
+  const start = () => {
+    setIsMeasuring(true);
+    startMeasuring();
+  };
+
+  const stop = () => {
+    stopMeasuring();
+    setIsMeasuring(false);
+  };
+
   const getFPSGraphData = (key: "JS" | "UI") => {
     return formatFpsToXY(
       measures
@@ -46,17 +56,7 @@ const PerfMonitorView = ({
       {!isMeasuring && measures.length > 0 ? (
         <Report measures={measures} />
       ) : null}
-      <Controls
-        isMeasuring={isMeasuring}
-        start={() => {
-          setIsMeasuring(true);
-          startMeasuring();
-        }}
-        stop={() => {
-          stopMeasuring();
-          setIsMeasuring(false);
-        }}
-      />
+      <Controls isMeasuring={isMeasuring} start={start} stop={stop} />
       <Chart data={getFPSGraphData("JS")} height={350} title="JS FPS" />
       <Chart data={getFPSGraphData("UI")} height={350} title="UI FPS" />
     </ScrollContainer>
