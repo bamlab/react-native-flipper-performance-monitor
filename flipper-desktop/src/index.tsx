@@ -67,10 +67,10 @@ const sanitizeData = (fps: number) => {
 };
 
 // This is the same value as defined here: https://github.com/bamlab/react-native-performance/blob/master/flipper-android/src/main/java/tech/bam/rnperformance/FPSMonitor.java#L42
-const INTERVAL = 500;
+const MEASURE_INTERVAL = 500;
 const formatFpsToXY = (fps: number[]): { x: number; y: number }[] => {
   return fps.map((y, index) => ({
-    x: index * INTERVAL,
+    x: index * MEASURE_INTERVAL,
     y,
   }));
 };
