@@ -6,12 +6,10 @@ export const Chart = ({
   data,
   title,
   height,
-  threshold,
 }: {
   data: { x: number; y: number }[];
   title: string;
   height: number;
-  threshold: number;
 }) => {
   useEffect(() => {
     ApexCharts.exec(title, "updateSeries", [

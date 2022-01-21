@@ -110,18 +110,8 @@ const PerfMonitorView = ({
           setIsMeasuring(false);
         }}
       />
-      <Chart
-        data={getFPSGraphData("JS")}
-        height={350}
-        title="JS FPS"
-        threshold={59}
-      />
-      <Chart
-        data={getFPSGraphData("UI")}
-        height={350}
-        title="UI FPS"
-        threshold={10}
-      />
+      <Chart data={getFPSGraphData("JS")} height={350} title="JS FPS" />
+      <Chart data={getFPSGraphData("UI")} height={350} title="UI FPS" />
     </ScrollContainer>
   );
 };
