@@ -1,64 +1,11 @@
 import React, { useState } from "react";
-import {
-  createState,
-  PluginClient,
-  styled,
-  usePlugin,
-  useValue,
-} from "flipper-plugin";
-import { Button, Typography } from "@material-ui/core";
-import { Chart } from "./Chart";
+import { createState, PluginClient, usePlugin, useValue } from "flipper-plugin";
+import { Chart } from "./components/Chart";
 import { Report } from "./Report";
+import { Controls } from "./components/Controls";
+import { ScrollContainer } from "./components/ScrollContainer";
+import { Title } from "./components/Title";
 import { Measure } from "./types/Measure";
-
-const ScrollContainer = styled("div")<{ scrollable: boolean }>(
-  ({ scrollable }) => ({
-    overflow: scrollable ? "auto" : "hidden",
-    flex: "auto",
-    flexDirection: "column",
-    display: "flex",
-  })
-);
-
-const Title = () => (
-  <Typography
-    variant="h3"
-    component="h3"
-    style={{ textAlign: "center", width: "100%", paddingBottom: 20 }}
-  >
-    Performance
-  </Typography>
-);
-
-const Controls = ({
-  isMeasuring,
-  start,
-  stop,
-}: {
-  isMeasuring: boolean;
-  start: () => void;
-  stop: () => void;
-}) => (
-  <>
-    <Button
-      variant="contained"
-      color="primary"
-      disabled={isMeasuring}
-      onClick={start}
-      style={{ marginBottom: 10 }}
-    >
-      Start
-    </Button>
-    <Button
-      variant="contained"
-      color="primary"
-      disabled={!isMeasuring}
-      onClick={stop}
-    >
-      Stop
-    </Button>
-  </>
-);
 
 const sanitizeData = (fps: number) => {
   if (fps > 60) return 60;

@@ -1,6 +1,6 @@
 import React from "react";
-import { CircularProgressWithLabel } from "./CircularProgressWithLabel";
-import { Table } from "./Table";
+import { CircularProgressWithLabel } from "./components/CircularProgressWithLabel";
+import { Table } from "./components/Table";
 import { round } from "./utils/round";
 import { Measure } from "./types/Measure";
 
