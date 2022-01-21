@@ -2,22 +2,36 @@ import React, { useMemo, useEffect, ComponentProps } from "react";
 import ReactApexChart from "react-apexcharts";
 import ApexCharts from "apexcharts";
 
+const formatMeasuresToXY = (
+  data: number[],
+  interval: number
+): { x: number; y: number }[] => {
+  return data.map((y, index) => ({
+    x: index * interval,
+    y,
+  }));
+};
+
 export const Chart = ({
   data,
   title,
   height,
+  interval,
+  timeLimit,
 }: {
-  data: { x: number; y: number }[];
+  data: number[];
   title: string;
   height: number;
+  interval: number;
+  timeLimit?: number;
 }) => {
   useEffect(() => {
     ApexCharts.exec(title, "updateSeries", [
       {
-        data,
+        data: formatMeasuresToXY(data, interval),
       },
     ]);
-  }, [data]);
+  }, [data, interval]);
 
   const options = useMemo<ComponentProps<typeof ReactApexChart>["options"]>(
     () => ({
@@ -29,7 +43,7 @@ export const Chart = ({
           enabled: true,
           easing: "linear",
           dynamicAnimation: {
-            speed: 1000,
+            speed: interval,
           },
         },
         zoom: {
@@ -52,10 +66,12 @@ export const Chart = ({
           opacity: 0.5,
         },
       },
-      xaxis: {
-        // @ts-ignore "time" is definitely an option
-        type: "time",
-      },
+      // @ts-ignore "time" is definitely an option
+      xaxis: timeLimit
+        ? { type: "numeric", min: 0, max: timeLimit }
+        : {
+            type: "time",
+          },
       yaxis: {
         min: 0,
         max: 60,

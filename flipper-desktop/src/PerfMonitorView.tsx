@@ -14,12 +14,6 @@ const sanitizeData = (fps: number) => {
 
 // This is the same value as defined here: https://github.com/bamlab/react-native-performance/blob/master/flipper-android/src/main/java/tech/bam/rnperformance/FPSMonitor.java#L42
 const MEASURE_INTERVAL = 500;
-const formatFpsToXY = (fps: number[]): { x: number; y: number }[] => {
-  return fps.map((y, index) => ({
-    x: index * MEASURE_INTERVAL,
-    y,
-  }));
-};
 
 export const PerfMonitorView = ({
   measures,
@@ -32,13 +26,10 @@ export const PerfMonitorView = ({
   stopMeasuring: () => void;
   isMeasuring: boolean;
 }) => {
-  const getFPSGraphData = (key: "JS" | "UI") => {
-    return formatFpsToXY(
-      measures
-        .map((measure) => (measure[key] / measure.expected) * 60)
-        .map(sanitizeData)
-    );
-  };
+  const getFPSGraphData = (key: "JS" | "UI") =>
+    measures
+      .map((measure) => (measure[key] / measure.expected) * 60)
+      .map(sanitizeData);
 
   return (
     <ScrollContainer scrollable>
@@ -51,8 +42,18 @@ export const PerfMonitorView = ({
         start={startMeasuring}
         stop={stopMeasuring}
       />
-      <Chart data={getFPSGraphData("JS")} height={350} title="JS FPS" />
-      <Chart data={getFPSGraphData("UI")} height={350} title="UI FPS" />
+      <Chart
+        data={getFPSGraphData("JS")}
+        height={350}
+        title="JS FPS"
+        interval={MEASURE_INTERVAL}
+      />
+      <Chart
+        data={getFPSGraphData("UI")}
+        height={350}
+        title="UI FPS"
+        interval={MEASURE_INTERVAL}
+      />
     </ScrollContainer>
   );
 };
