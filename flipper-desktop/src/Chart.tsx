@@ -3,12 +3,12 @@ import ReactApexChart from "react-apexcharts";
 import ApexCharts from "apexcharts";
 
 export const Chart = ({
-  fps,
+  data,
   title,
   height,
   threshold,
 }: {
-  fps: { x: number; y: number }[];
+  data: { x: number; y: number }[];
   title: string;
   height: number;
   threshold: number;
@@ -16,10 +16,10 @@ export const Chart = ({
   useEffect(() => {
     ApexCharts.exec(title, "updateSeries", [
       {
-        data: fps,
+        data,
       },
     ]);
-  }, [fps]);
+  }, [data]);
 
   const options = useMemo<ComponentProps<typeof ReactApexChart>["options"]>(
     () => ({
