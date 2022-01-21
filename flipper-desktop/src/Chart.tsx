@@ -2,28 +2,13 @@ import React, { useMemo, useEffect, ComponentProps } from "react";
 import ReactApexChart from "react-apexcharts";
 import ApexCharts from "apexcharts";
 
-const sanitizeData = (fps: number) => {
-  if (fps > 60) return 60;
-  if (fps < 0) return 0;
-  return Math.ceil(fps);
-};
-
-// This is the same value as defined here: https://github.com/bamlab/react-native-performance/blob/master/flipper-android/src/main/java/tech/bam/rnperformance/FPSMonitor.java#L42
-const INTERVAL = 500;
-const formatFpsToXY = (fps: number[]): { x: number; y: number }[] => {
-  return fps.map((y, index) => ({
-    x: index * INTERVAL,
-    y,
-  }));
-};
-
 export const Chart = ({
   fps,
   title,
   height,
   threshold,
 }: {
-  fps: number[];
+  fps: { x: number; y: number }[];
   title: string;
   height: number;
   threshold: number;
@@ -31,7 +16,7 @@ export const Chart = ({
   useEffect(() => {
     ApexCharts.exec(title, "updateSeries", [
       {
-        data: formatFpsToXY(fps.map(sanitizeData)),
+        data: fps,
       },
     ]);
   }, [fps]);

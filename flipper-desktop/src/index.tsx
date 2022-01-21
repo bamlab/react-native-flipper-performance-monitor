@@ -60,6 +60,21 @@ const Controls = ({
   </>
 );
 
+const sanitizeData = (fps: number) => {
+  if (fps > 60) return 60;
+  if (fps < 0) return 0;
+  return Math.ceil(fps);
+};
+
+// This is the same value as defined here: https://github.com/bamlab/react-native-performance/blob/master/flipper-android/src/main/java/tech/bam/rnperformance/FPSMonitor.java#L42
+const INTERVAL = 500;
+const formatFpsToXY = (fps: number[]): { x: number; y: number }[] => {
+  return fps.map((y, index) => ({
+    x: index * INTERVAL,
+    y,
+  }));
+};
+
 const PerfMonitorView = ({
   measures,
   startMeasuring,
@@ -71,7 +86,11 @@ const PerfMonitorView = ({
 }) => {
   const [isMeasuring, setIsMeasuring] = useState(false);
   const getFPSGraphData = (key: "JS" | "UI") => {
-    return measures.map((measure) => (measure[key] / measure.expected) * 60);
+    return formatFpsToXY(
+      measures
+        .map((measure) => (measure[key] / measure.expected) * 60)
+        .map(sanitizeData)
+    );
   };
 
   return (
