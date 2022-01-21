@@ -26,22 +26,13 @@ const PerfMonitorView = ({
   measures,
   startMeasuring,
   stopMeasuring,
+  isMeasuring,
 }: {
   measures: Measure[];
   startMeasuring: () => void;
   stopMeasuring: () => void;
+  isMeasuring: boolean;
 }) => {
-  const [isMeasuring, setIsMeasuring] = useState(false);
-  const start = () => {
-    setIsMeasuring(true);
-    startMeasuring();
-  };
-
-  const stop = () => {
-    stopMeasuring();
-    setIsMeasuring(false);
-  };
-
   const getFPSGraphData = (key: "JS" | "UI") => {
     return formatFpsToXY(
       measures
@@ -56,7 +47,11 @@ const PerfMonitorView = ({
       {!isMeasuring && measures.length > 0 ? (
         <Report measures={measures} />
       ) : null}
-      <Controls isMeasuring={isMeasuring} start={start} stop={stop} />
+      <Controls
+        isMeasuring={isMeasuring}
+        start={startMeasuring}
+        stop={stopMeasuring}
+      />
       <Chart data={getFPSGraphData("JS")} height={350} title="JS FPS" />
       <Chart data={getFPSGraphData("UI")} height={350} title="UI FPS" />
     </ScrollContainer>
@@ -104,11 +99,23 @@ export function Component() {
   // First measure is usually 0 regardless of performance
   const measures = useValue(instance.measures).slice(1);
 
+  const [isMeasuring, setIsMeasuring] = useState(false);
+  const start = () => {
+    setIsMeasuring(true);
+    instance.startMeasuring();
+  };
+
+  const stop = () => {
+    instance.stopMeasuring();
+    setIsMeasuring(false);
+  };
+
   return (
     <PerfMonitorView
       measures={measures}
-      startMeasuring={instance.startMeasuring}
-      stopMeasuring={instance.stopMeasuring}
+      isMeasuring={isMeasuring}
+      startMeasuring={start}
+      stopMeasuring={stop}
     />
   );
 }
