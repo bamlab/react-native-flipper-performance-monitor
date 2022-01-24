@@ -1,7 +1,8 @@
 import React from "react";
 import { Button } from "@material-ui/core";
+import { PlayArrow, Stop } from "@material-ui/icons";
 
-export const Controls = ({
+export const StartButton = ({
   isMeasuring,
   start,
   stop,
@@ -9,24 +10,23 @@ export const Controls = ({
   isMeasuring: boolean;
   start: () => void;
   stop: () => void;
-}) => (
-  <>
+}) =>
+  isMeasuring ? (
     <Button
       variant="contained"
-      color="primary"
-      disabled={isMeasuring}
-      onClick={start}
-      style={{ marginBottom: 10 }}
-    >
-      Start
-    </Button>
-    <Button
-      variant="contained"
-      color="primary"
-      disabled={!isMeasuring}
+      color="secondary"
       onClick={stop}
+      startIcon={<Stop />}
     >
-      Stop
+      Stop Measuring
     </Button>
-  </>
-);
+  ) : (
+    <Button
+      variant="contained"
+      color="primary"
+      onClick={start}
+      startIcon={<PlayArrow />}
+    >
+      Start Measuring
+    </Button>
+  );

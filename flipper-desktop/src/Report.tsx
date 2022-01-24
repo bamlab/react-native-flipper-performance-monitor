@@ -4,7 +4,21 @@ import { Table } from "./components/Table";
 import { round } from "./utils/round";
 import { Measure } from "./types/Measure";
 
-export const Report = ({ measures }: { measures: Measure[] }) => {
+const getColor = (score: number) => {
+  if (score >= 90) return "#2ECC40";
+  if (score >= 50) return "#FF851B";
+  return "#FF4136";
+};
+
+export const Report = ({
+  measures,
+  isMeasuring,
+}: {
+  measures: Measure[];
+  isMeasuring: boolean;
+}) => {
+  const displayPlaceholder = measures.length === 0 || isMeasuring;
+
   const getFrameCount = () => {
     return measures.reduce(
       ({ UI, JS, expected }, measure) => ({
@@ -54,17 +68,25 @@ export const Report = ({ measures }: { measures: Measure[] }) => {
     const jsLock = getJSDeadlockTime();
 
     return [
-      { title: "Average JS FPS", value: round(averageFPS.JS, 1) },
-      { title: "Average UI FPS", value: round(averageFPS.UI, 1) },
+      {
+        title: "Average JS FPS",
+        value: displayPlaceholder ? "-" : round(averageFPS.JS, 1),
+      },
+      {
+        title: "Average UI FPS",
+        value: displayPlaceholder ? "-" : round(averageFPS.UI, 1),
+      },
       {
         title: "JS  threadlock",
-        value: `${round(jsLock.time, 3)}s (${round(
-          jsLock.percentage * 100,
-          2
-        )}%)`,
+        value: displayPlaceholder
+          ? "-"
+          : `${round(jsLock.time, 3)}s (${round(jsLock.percentage * 100, 2)}%)`,
       },
     ];
   };
+
+  const score = displayPlaceholder ? 100 : getScore();
+  const color = displayPlaceholder ? "#eeeeee50" : getColor(score);
 
   return (
     <>
@@ -77,7 +99,7 @@ export const Report = ({ measures }: { measures: Measure[] }) => {
           marginBottom: 20,
         }}
       >
-        <CircularProgressWithLabel size={80} value={getScore()} />
+        <CircularProgressWithLabel size={80} color={color} value={score} />
       </div>
       <Table rows={getReportRows()} />
     </>

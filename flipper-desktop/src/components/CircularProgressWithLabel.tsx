@@ -3,18 +3,14 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 
-const getColor = (score: number) => {
-  if (score >= 90) return "#2ECC40";
-  if (score >= 50) return "#FF851B";
-  return "#FF4136";
-};
-
-export const CircularProgressWithLabel = (props: {
+export const CircularProgressWithLabel = ({
+  color,
+  ...props
+}: {
+  color: string;
   size: number;
   value: number;
 }) => {
-  const color = getColor(props.value);
-
   return (
     <Box position="relative" display="inline-flex">
       <CircularProgress variant="determinate" {...props} style={{ color }} />

@@ -18,20 +18,23 @@ export const Chart = ({
   height,
   interval,
   timeLimit,
+  color,
 }: {
   data: number[];
   title: string;
   height: number;
   interval: number;
   timeLimit?: number | null;
+  color?: string;
 }) => {
   const series = useMemo(
     () => [
       {
+        name: title,
         data: formatMeasuresToXY(data, interval),
       },
     ],
-    [data, interval]
+    [data, interval, title]
   );
 
   const options = useMemo<ComponentProps<typeof ReactApexChart>["options"]>(
@@ -74,6 +77,7 @@ export const Chart = ({
         min: 0,
         max: 60,
       },
+      colors: [color],
     }),
     [title, timeLimit]
   );
