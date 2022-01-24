@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`displays FPS data and scoring 1`] = `"Performance0Average JS FPS0Average UI FPS60JS  threadlock0.506s (100%)StartStop"`;
+exports[`displays FPS data and scoring 1`] = `"Performance0Average JS FPS0Average UI FPS60JS  threadlock0.506s (100%)Set time limitStartStop"`;
 
 exports[`displays FPS data and scoring 2`] = `
 <body>
@@ -18,7 +18,7 @@ exports[`displays FPS data and scoring 2`] = `
         style="justify-content: center; align-items: center; width: 100%; display: flex; margin-bottom: 20px;"
       >
         <div
-          class="MuiBox-root MuiBox-root-1"
+          class="MuiBox-root MuiBox-root-5"
         >
           <div
             aria-valuenow="0"
@@ -42,7 +42,7 @@ exports[`displays FPS data and scoring 2`] = `
             </svg>
           </div>
           <div
-            class="MuiBox-root MuiBox-root-2"
+            class="MuiBox-root MuiBox-root-6"
           >
             <div
               class="MuiTypography-root MuiTypography-caption MuiTypography-colorTextSecondary"
@@ -110,6 +110,44 @@ exports[`displays FPS data and scoring 2`] = `
           </tr>
         </tbody>
       </table>
+      <label
+        class="MuiFormControlLabel-root"
+      >
+        <span
+          aria-disabled="false"
+          class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-1 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-checked-2 Mui-checked MuiIconButton-colorSecondary"
+        >
+          <span
+            class="MuiIconButton-label"
+          >
+            <input
+              checked=""
+              class="PrivateSwitchBase-input-4"
+              data-indeterminate="false"
+              type="checkbox"
+              value=""
+            />
+            <svg
+              aria-hidden="true"
+              class="MuiSvgIcon-root"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
+              />
+            </svg>
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </span>
+        <span
+          class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
+        >
+          Set time limit
+        </span>
+      </label>
       <button
         class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary"
         style="margin-bottom: 10px;"
@@ -140,13 +178,13 @@ exports[`displays FPS data and scoring 2`] = `
       <apex-charts
         height="350"
         options="[object Object]"
-        series=""
+        series="[object Object]"
         type="line"
       />
       <apex-charts
         height="350"
         options="[object Object]"
-        series=""
+        series="[object Object]"
         type="line"
       />
     </div>
