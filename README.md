@@ -46,7 +46,7 @@ import tech.bam.rnperformance.flipper.RNPerfMonitorPlugin;
 client.addPlugin(new RNPerfMonitorPlugin(reactInstanceManager));
 ```
 
-## Contributing to flipper Desktopp
+## Contributing to flipper Desktop
 
 1. Clone the repository.
 2. Add path to your local `react-native-performance` folder in `~/.flipper/config.json` as shown on [the flipper docs](https://fbflipper.com/docs/extending/loading-custom-plugins/)

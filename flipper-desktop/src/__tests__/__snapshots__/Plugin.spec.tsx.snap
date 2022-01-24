@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`displays FPS data and scoring 1`] = `"Performance0Average JS FPS0Average UI FPS60JS  threadlock0.506s (100%)StartStop"`;
+exports[`displays FPS data and scoring 1`] = `"Performance0Average JS FPS0Average UI FPS60JS  threadlock0.506s (100%)Start MeasuringEnable time limit of ms"`;
 
 exports[`displays FPS data and scoring 2`] = `
 <body>
@@ -110,43 +110,109 @@ exports[`displays FPS data and scoring 2`] = `
           </tr>
         </tbody>
       </table>
-      <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary"
-        style="margin-bottom: 10px;"
-        tabindex="0"
-        type="button"
+      <div
+        style="margin: 10px; display: flex; flex-direction: row; justify-content: center;"
       >
-        <span
-          class="MuiButton-label"
+        <button
+          class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary"
+          tabindex="0"
+          type="button"
         >
-          Start
-        </span>
-        <span
-          class="MuiTouchRipple-root"
-        />
-      </button>
-      <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary Mui-disabled Mui-disabled"
-        disabled=""
-        tabindex="-1"
-        type="button"
-      >
-        <span
-          class="MuiButton-label"
+          <span
+            class="MuiButton-label"
+          >
+            <span
+              class="MuiButton-startIcon MuiButton-iconSizeMedium"
+            >
+              <svg
+                aria-hidden="true"
+                class="MuiSvgIcon-root"
+                focusable="false"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M8 5v14l11-7z"
+                />
+              </svg>
+            </span>
+            Start Measuring
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </button>
+        <div
+          style="margin-left: 10px; display: flex; flex-direction: row; align-items: center;"
         >
-          Stop
-        </span>
-      </button>
+          <label
+            class="MuiFormControlLabel-root"
+          >
+            <span
+              aria-disabled="false"
+              class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-3 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-checked-4 Mui-checked MuiIconButton-colorSecondary"
+            >
+              <span
+                class="MuiIconButton-label"
+              >
+                <input
+                  checked=""
+                  class="PrivateSwitchBase-input-6"
+                  data-indeterminate="false"
+                  type="checkbox"
+                  value=""
+                />
+                <svg
+                  aria-hidden="true"
+                  class="MuiSvgIcon-root"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
+                  />
+                </svg>
+              </span>
+              <span
+                class="MuiTouchRipple-root"
+              />
+            </span>
+            <span
+              class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
+            >
+              Enable time limit of 
+            </span>
+          </label>
+          <div
+            class="MuiFormControl-root MuiTextField-root"
+          >
+            <div
+              class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
+            >
+              <input
+                aria-invalid="false"
+                class="MuiInputBase-input MuiInput-input"
+                type="number"
+                value="10000"
+              />
+            </div>
+          </div>
+          <p
+            class="MuiTypography-root MuiTypography-body1"
+          >
+            ms
+          </p>
+        </div>
+      </div>
       <apex-charts
         height="350"
         options="[object Object]"
-        series=""
+        series="[object Object]"
         type="line"
       />
       <apex-charts
         height="350"
         options="[object Object]"
-        series=""
+        series="[object Object]"
         type="line"
       />
     </div>

@@ -2,39 +2,40 @@ import React, { useMemo, useEffect, ComponentProps } from "react";
 import ReactApexChart from "react-apexcharts";
 import ApexCharts from "apexcharts";
 
-const sanitizeData = (fps: number) => {
-  if (fps > 60) return 60;
-  if (fps < 0) return 0;
-  return Math.ceil(fps);
-};
-
-// This is the same value as defined here: https://github.com/bamlab/react-native-performance/blob/master/flipper-android/src/main/java/tech/bam/rnperformance/FPSMonitor.java#L42
-const INTERVAL = 500;
-const formatFpsToXY = (fps: number[]): { x: number; y: number }[] => {
-  return fps.map((y, index) => ({
-    x: index * INTERVAL,
+const formatMeasuresToXY = (
+  data: number[],
+  interval: number
+): { x: number; y: number }[] => {
+  return data.map((y, index) => ({
+    x: index * interval,
     y,
   }));
 };
 
 export const Chart = ({
-  fps,
+  data,
   title,
   height,
-  threshold,
+  interval,
+  timeLimit,
+  color,
 }: {
-  fps: number[];
+  data: number[];
   title: string;
   height: number;
-  threshold: number;
+  interval: number;
+  timeLimit?: number | null;
+  color?: string;
 }) => {
-  useEffect(() => {
-    ApexCharts.exec(title, "updateSeries", [
+  const series = useMemo(
+    () => [
       {
-        data: formatFpsToXY(fps.map(sanitizeData)),
+        name: title,
+        data: formatMeasuresToXY(data, interval),
       },
-    ]);
-  }, [fps]);
+    ],
+    [data, interval, title]
+  );
 
   const options = useMemo<ComponentProps<typeof ReactApexChart>["options"]>(
     () => ({
@@ -46,7 +47,7 @@ export const Chart = ({
           enabled: true,
           easing: "linear",
           dynamicAnimation: {
-            speed: 1000,
+            speed: interval,
           },
         },
         zoom: {
@@ -69,19 +70,24 @@ export const Chart = ({
           opacity: 0.5,
         },
       },
-      xaxis: {
-        // @ts-ignore "time" is definitely an option
-        type: "time",
-      },
+      xaxis: timeLimit
+        ? { type: "numeric", min: 0, max: timeLimit }
+        : { type: "numeric", min: 0, max: undefined },
       yaxis: {
         min: 0,
         max: 60,
       },
+      colors: [color],
     }),
-    [title]
+    [title, timeLimit]
   );
 
   return (
-    <ReactApexChart options={options} series={[]} type="line" height={height} />
+    <ReactApexChart
+      options={options}
+      series={series}
+      type="line"
+      height={height}
+    />
   );
 };
