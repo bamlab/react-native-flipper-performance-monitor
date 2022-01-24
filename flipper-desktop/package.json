@@ -11,7 +11,7 @@
   ],
   "icon": "apps",
   "title": "RN Perf monitor",
-  "description": "Alpha and experimental perf monitor for RN, like Lighthouse",
+  "description": "Performance monitor for RN, aiming to be like Lighthouse",
   "homepage": "https://github.com/bamlab/react-native-performance",
   "repository": {
     "type": "git",
