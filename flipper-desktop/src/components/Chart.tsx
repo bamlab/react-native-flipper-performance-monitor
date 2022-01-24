@@ -23,15 +23,16 @@ export const Chart = ({
   title: string;
   height: number;
   interval: number;
-  timeLimit?: number;
+  timeLimit?: number | null;
 }) => {
-  useEffect(() => {
-    ApexCharts.exec(title, "updateSeries", [
+  const series = useMemo(
+    () => [
       {
         data: formatMeasuresToXY(data, interval),
       },
-    ]);
-  }, [data, interval]);
+    ],
+    [data, interval]
+  );
 
   const options = useMemo<ComponentProps<typeof ReactApexChart>["options"]>(
     () => ({
@@ -81,6 +82,11 @@ export const Chart = ({
   );
 
   return (
-    <ReactApexChart options={options} series={[]} type="line" height={height} />
+    <ReactApexChart
+      options={options}
+      series={series}
+      type="line"
+      height={height}
+    />
   );
 };
