@@ -67,18 +67,15 @@ export const Chart = ({
           opacity: 0.5,
         },
       },
-      // @ts-ignore "time" is definitely an option
       xaxis: timeLimit
         ? { type: "numeric", min: 0, max: timeLimit }
-        : {
-            type: "time",
-          },
+        : { type: "numeric", min: 0, max: undefined },
       yaxis: {
         min: 0,
         max: 60,
       },
     }),
-    [title]
+    [title, timeLimit]
   );
 
   return (
