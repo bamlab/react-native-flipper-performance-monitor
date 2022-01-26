@@ -4,7 +4,8 @@
 
 Only Android is supported for now.
 
-![Lighthouse like example](https://user-images.githubusercontent.com/4534323/93721011-7c254800-fb8d-11ea-955b-95764a99e727.jpeg)
+![rn-perf-monitor](https://user-images.githubusercontent.com/4534323/151138734-dc9af3b1-1e96-4416-8abd-346597a4dbe8.gif)
+
 
 This is how the score is calculated below, quite naively, but open to suggestions:
 <img width="1050" alt="plugin-score" src="https://user-images.githubusercontent.com/4534323/142174520-ab09e61c-9727-4969-8e1e-a9b688f9fd78.png">
