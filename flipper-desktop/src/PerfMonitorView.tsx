@@ -102,7 +102,11 @@ export const PerfMonitorView = ({
   const [timeLimitEnabled, setTimeLimitEnabled] = useState(true);
   const [timeLimit, setTimeLimit] = useState<number | null>(DEFAULT_TIME_LIMIT);
   useEffect(() => {
-    if (timeLimit && measures.length > timeLimit / MEASURE_INTERVAL) {
+    if (
+      timeLimitEnabled &&
+      timeLimit &&
+      measures.length > timeLimit / MEASURE_INTERVAL
+    ) {
       stopMeasuring();
     }
   }, [timeLimit, measures]);
