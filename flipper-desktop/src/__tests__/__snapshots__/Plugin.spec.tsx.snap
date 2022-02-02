@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`displays FPS data and scoring 1`] = `"Performance0Average JS FPS0Average UI FPS60JS  threadlock0.506s (100%)Start MeasuringEnable time limit of ms"`;
+exports[`displays FPS data and scoring 1`] = `"Performance35Average JS FPS30Average UI FPS55JS  threadlock0.506s (50%)Start MeasuringEnable time limit of ms"`;
 
 exports[`displays FPS data and scoring 2`] = `
 <body>
@@ -21,7 +21,7 @@ exports[`displays FPS data and scoring 2`] = `
           class="MuiBox-root MuiBox-root-1"
         >
           <div
-            aria-valuenow="0"
+            aria-valuenow="35"
             class="MuiCircularProgress-root MuiCircularProgress-colorPrimary MuiCircularProgress-determinate"
             role="progressbar"
             style="width: 80px; height: 80px; transform: rotate(-90deg); color: rgb(255, 65, 54);"
@@ -37,7 +37,7 @@ exports[`displays FPS data and scoring 2`] = `
                 fill="none"
                 r="20.2"
                 stroke-width="3.6"
-                style="stroke-dasharray: 126.920; stroke-dashoffset: 126.920px;"
+                style="stroke-dasharray: 126.920; stroke-dashoffset: 82.498px;"
               />
             </svg>
           </div>
@@ -48,7 +48,7 @@ exports[`displays FPS data and scoring 2`] = `
               class="MuiTypography-root MuiTypography-caption MuiTypography-colorTextSecondary"
               style="font-size: 28px; color: rgb(255, 65, 54);"
             >
-              0
+              35
             </div>
           </div>
         </div>
@@ -73,7 +73,7 @@ exports[`displays FPS data and scoring 2`] = `
             <td
               class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight"
             >
-              0
+              30
             </td>
           </tr>
           <tr
@@ -89,7 +89,7 @@ exports[`displays FPS data and scoring 2`] = `
             <td
               class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight"
             >
-              60
+              55
             </td>
           </tr>
           <tr
@@ -105,7 +105,7 @@ exports[`displays FPS data and scoring 2`] = `
             <td
               class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight"
             >
-              0.506s (100%)
+              0.506s (50%)
             </td>
           </tr>
         </tbody>

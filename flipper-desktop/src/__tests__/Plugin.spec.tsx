@@ -17,6 +17,13 @@ test("displays FPS data and scoring", async () => {
   fireEvent.click(renderer.getByText("Start Measuring"));
   expect(onSend).toHaveBeenCalledWith("startMeasuring", undefined);
 
+  // First measure on Android is always 0 and is ignored by plugin
+  sendEvent("addRecord", {
+    JS: 0,
+    UI: 0,
+    expected: 30,
+  });
+
   sendEvent("addRecord", {
     JS: 30,
     UI: 25,
