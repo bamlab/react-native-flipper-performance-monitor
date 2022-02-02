@@ -155,6 +155,7 @@ exports[`displays FPS data and scoring 2`] = `
                 class="MuiIconButton-label"
               >
                 <input
+                  aria-label="Time limit enabled"
                   checked=""
                   class="PrivateSwitchBase-input-6"
                   data-indeterminate="false"
@@ -190,6 +191,7 @@ exports[`displays FPS data and scoring 2`] = `
             >
               <input
                 aria-invalid="false"
+                aria-label="Time limit"
                 class="MuiInputBase-input MuiInput-input"
                 type="number"
                 value="10000"

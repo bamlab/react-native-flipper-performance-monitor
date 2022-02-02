@@ -54,6 +54,9 @@ const TimeLimitControl = ({
     <FormControlLabel
       control={
         <Checkbox
+          inputProps={{
+            "aria-label": "Time limit enabled",
+          }}
           checked={timeLimitEnabled}
           onChange={(event: { target: { checked: boolean } }) => {
             toggleTimeLimit(event.target.checked);
@@ -63,6 +66,9 @@ const TimeLimitControl = ({
       label="Enable time limit of "
     />
     <TextField
+      inputProps={{
+        "aria-label": "Time limit",
+      }}
       type="number"
       onChange={({ target: { value } }) =>
         setTimeLimit(Math.floor(parseInt(value, 10)))
