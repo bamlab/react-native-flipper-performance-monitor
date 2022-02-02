@@ -11,48 +11,96 @@ require("@testing-library/react");
 jest.mock("react-apexcharts", () => "apex-charts");
 jest.mock("apexcharts", () => ({ exec: jest.fn() }));
 
-test("displays FPS data and scoring", async () => {
-  const { renderer, sendEvent, onSend } = TestUtils.renderPlugin(Plugin);
+const setupPlugin = () => {
+  const { instance, renderer, sendEvent, onSend } =
+    TestUtils.renderPlugin(Plugin);
 
-  fireEvent.click(renderer.getByText("Start Measuring"));
-  expect(onSend).toHaveBeenCalledWith("startMeasuring", undefined);
-
-  sendEvent("addRecord", {
-    JS: 30,
-    UI: 25,
-    expected: 30,
-  });
+  // First measure on Android is always 0 and is ignored by plugin
   sendEvent("addRecord", {
     JS: 0,
-    UI: 30,
+    UI: 0,
     expected: 30,
   });
 
-  onSend.mockClear();
+  return {
+    addMeasure: ({ JS, UI }: { JS: number; UI: number }) =>
+      sendEvent("addRecord", {
+        JS,
+        UI,
+        expected: 30,
+      }),
+    clickStart: () => fireEvent.click(renderer.getByText("Start Measuring")),
+    clickStop: () => fireEvent.click(renderer.getByText("Stop Measuring")),
+    expectToMatchSnapshot: () => {
+      expect(
+        (renderer.baseElement as HTMLBodyElement).textContent
+      ).toMatchSnapshot();
+      expect(renderer.baseElement).toMatchSnapshot();
+    },
+    setTimeLimit: (limit: number) => {
+      const input = renderer.getByLabelText("Time limit");
+      fireEvent.change(input, { target: { value: limit } });
+    },
+    clickTimeLimitCheckbox: () => {
+      const checkbox = renderer.getByLabelText("Time limit enabled");
+      fireEvent.click(checkbox);
+    },
 
-  fireEvent.click(renderer.getByText("Stop Measuring"));
-  expect(onSend).toHaveBeenCalledWith("stopMeasuring", undefined);
+    renderer,
+    instance,
+    onSend,
+  };
+};
 
-  expect(
-    (renderer.baseElement as HTMLBodyElement).textContent
-  ).toMatchSnapshot();
-  expect(renderer.baseElement).toMatchSnapshot();
+test("displays FPS data and scoring", async () => {
+  const { addMeasure, expectToMatchSnapshot } = setupPlugin();
+
+  addMeasure({ JS: 30, UI: 25 });
+  addMeasure({ JS: 0, UI: 30 });
+
+  expectToMatchSnapshot();
 });
 
-test("clicking start should reset measures", () => {
-  const { renderer, sendEvent, instance } = TestUtils.renderPlugin(Plugin);
+test("clicking start should reset measures and start measures", () => {
+  const { addMeasure, clickStart, clickStop, instance, onSend } = setupPlugin();
 
-  sendEvent("addRecord", {
-    JS: 30,
-    UI: 25,
-    expected: 30,
-  });
-  sendEvent("addRecord", {
-    JS: 0,
-    UI: 30,
-    expected: 30,
-  });
+  addMeasure({ JS: 30, UI: 25 });
+  addMeasure({ JS: 0, UI: 30 });
 
-  fireEvent.click(renderer.getByText("Start Measuring"));
+  clickStart();
+  expect(onSend).toHaveBeenCalledWith("startMeasuring", undefined);
+  onSend.mockClear();
+
   expect(instance.measures.get()).toEqual([]);
+
+  clickStop();
+  expect(onSend).toHaveBeenCalledWith("stopMeasuring", undefined);
+});
+
+test("stops after set time limit", () => {
+  const { addMeasure, setTimeLimit, onSend } = setupPlugin();
+
+  setTimeLimit(1000);
+
+  addMeasure({ JS: 30, UI: 30 });
+  addMeasure({ JS: 30, UI: 30 });
+  expect(onSend).not.toHaveBeenCalledWith("stopMeasuring", undefined);
+  // 1000ms means 3 measures would be displayed: 0, 500 and 1000
+  addMeasure({ JS: 30, UI: 30 });
+  expect(onSend).toHaveBeenCalledWith("stopMeasuring", undefined);
+});
+
+test("continues after set time limit if time limit disabled", () => {
+  const { addMeasure, clickTimeLimitCheckbox, setTimeLimit, onSend } =
+    setupPlugin();
+
+  setTimeLimit(1000);
+  clickTimeLimitCheckbox();
+
+  addMeasure({ JS: 30, UI: 30 });
+  addMeasure({ JS: 30, UI: 30 });
+  expect(onSend).not.toHaveBeenCalledWith("stopMeasuring", undefined);
+  // 1000ms means 3 measures would be displayed: 0, 500 and 1000
+  addMeasure({ JS: 30, UI: 30 });
+  expect(onSend).not.toHaveBeenCalledWith("stopMeasuring", undefined);
 });
