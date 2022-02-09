@@ -9,6 +9,8 @@ Only Android is supported for now. Add a 👍 on [this issue](https://github.com
 
 ## Usage
 
+[Here's a detailed article](https://blog.bam.tech/developer-news/measuring-and-improving-performance-on-a-react-native-app) to go further
+
 1. Disable *JS Dev Mode* in the settings (shake your device to open the development menu, then click settings)
 2. Click **Start Measuring**
 3. Do stuff in your app
