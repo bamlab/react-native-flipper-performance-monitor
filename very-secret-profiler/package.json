@@ -1,0 +1,22 @@
+{
+  "name": "very-secret-profiler",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bamlab/react-native-performance.git",
+    "directory": "very-secret-profiler"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": {
+    "name": "Almouro",
+    "email": "alexandrem@bam.tech"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "shelljs": "^0.8.5"
+  }
+}
