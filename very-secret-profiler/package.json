@@ -1,6 +1,6 @@
 {
-  "name": "very-secret-profiler",
-  "version": "1.0.0",
+  "name": "react-native-profiler",
+  "version": "0.0.3",
   "description": "",
   "main": "index.js",
   "repository": {
@@ -8,6 +8,7 @@
     "url": "https://github.com/bamlab/react-native-performance.git",
     "directory": "very-secret-profiler"
   },
+  "bin": "./index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -17,6 +18,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "lodash": "^4.17.21",
     "shelljs": "^0.8.5"
   }
 }
