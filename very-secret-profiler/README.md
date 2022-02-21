@@ -28,12 +28,8 @@ I think they can complement each other.
 ## Usage
 
 ```
-git clone https://github.com/bamlab/react-native-performance.git
-cd very-secret-profiler
-yarn
-# Start the coinbase app
 # This will print out JS Thread CPU Usage every 500ms
-node . com.coinbase.android
+npx react-native-profiler . com.coinbase.android
 ```
 
 If you need to find an app's bundle id:

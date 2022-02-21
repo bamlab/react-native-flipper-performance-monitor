@@ -1,7 +1,12 @@
+#!/usr/bin/env node
+
 const shell = require("shelljs");
+const mapValues = require("lodash/mapValues");
+
+const DEBUG = false;
 
 const executeCommand = (command) => {
-  return shell.exec(command, { silent: true }).stdout;
+  return shell.exec(command, { silent: !DEBUG }).stdout;
 };
 
 const bundleId = process.argv[2];
@@ -18,15 +23,15 @@ const getRamPageSize = () =>
   parseInt(executeCommand(`adb shell getconf PAGESIZE`), 10);
 
 const pidId = getPidId(bundleId);
-const SYSTEM_TICK_IN_ONE_SECOND = getCpuClockTick();
-const RAM_PAGE_SIZE = getRamPageSize();
+const SYSTEM_TICK_IN_ONE_SECOND = getCpuClockTick() || 100;
+const RAM_PAGE_SIZE = getRamPageSize() || 1024;
 const BYTES_PER_MB = 1024 * 1024;
 
 const pollProcStats = (pidId) => {
   const TIME_INTERVAL_S = 1;
   const pollProcess = shell.exec(
     `{ while true; do adb shell cat /proc/${pidId}/stat | awk '{print $14,$15,$16,$17,$22}';  sleep ${TIME_INTERVAL_S}; done }`,
-    { async: true, silent: true }
+    { async: true, silent: !DEBUG }
   );
 
   let previousTotalCpuTime = null;
@@ -102,7 +107,7 @@ const getSubProcessesStats = (pidId) => {
     });
 };
 
-const pollCpuPerCoreUsage = (pidId) => {
+const pollCpuPerCoreUsage = (pidId, dataCallback) => {
   let previousTotalCpuTimePerProcessId = {};
 
   const TIME_INTERVAL_S = 0.5;
@@ -117,17 +122,21 @@ const pollCpuPerCoreUsage = (pidId) => {
     const subProcessesStats = getSubProcessesStats(pidId);
 
     const TICKS_FOR_TIME_INTERVAL = SYSTEM_TICK_IN_ONE_SECOND * TIME_INTERVAL_S;
+    const toPercentage = (value) => (value * 100) / TICKS_FOR_TIME_INTERVAL;
 
     const groupCpuUsage = (groupByIteratee) =>
-      subProcessesStats.reduce(
-        (aggr, stat) => ({
-          ...aggr,
-          [groupByIteratee(stat)]:
-            (aggr[groupByIteratee(stat)] || 0) +
-            stat.totalCpuTime -
-            (previousTotalCpuTimePerProcessId[stat.processId] || 0),
-        }),
-        {}
+      mapValues(
+        subProcessesStats.reduce(
+          (aggr, stat) => ({
+            ...aggr,
+            [groupByIteratee(stat)]:
+              (aggr[groupByIteratee(stat)] || 0) +
+              stat.totalCpuTime -
+              (previousTotalCpuTimePerProcessId[stat.processId] || 0),
+          }),
+          {}
+        ),
+        toPercentage
       );
 
     const cpuUsagePerCore = groupCpuUsage((stat) => stat.cpuNumber);
@@ -137,8 +146,6 @@ const pollCpuPerCoreUsage = (pidId) => {
     const cpuUsagePerProcessName = groupCpuUsage((stat) => stat.processName);
 
     const jsThreadUsage = cpuUsagePerProcessName[JS_THREAD_PROCESS_NAME];
-
-    const toPercentage = (value) => (value * 100) / TICKS_FOR_TIME_INTERVAL;
 
     const logCpuUsagePerCore = () =>
       console.log(
@@ -165,8 +172,10 @@ const pollCpuPerCoreUsage = (pidId) => {
       );
 
     if (!isFirstMeasure) {
-      // logCpuUsagePerCore();
-      console.log(toPercentage(jsThreadUsage));
+      dataCallback({
+        perName: cpuUsagePerProcessName,
+        perCore: cpuUsagePerCore,
+      });
     }
     isFirstMeasure = false;
 
@@ -183,7 +192,9 @@ const pollCpuPerCoreUsage = (pidId) => {
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 const findReactNativeApps = async () => {
-  const packages = executeCommand("adb shell cmd package list packages")
+  const packages = executeCommand(
+    `adb shell pm list packages -3 |cut -f 2 -d ":"`
+  )
     .split("\n")
     .map((name) => name.replace("package:", ""));
   console.log(`Found ${packages.length} packages...`);
@@ -193,7 +204,7 @@ const findReactNativeApps = async () => {
     console.log(`Opening package ${index}/${packages.length}: ${package}`);
 
     executeCommand(` adb shell monkey -p ${package} 1`);
-    await sleep(1000);
+    await sleep(3000);
 
     const pidId = getPidId(package);
     const subProcesses = getSubProcessesStats(pidId);
@@ -211,4 +222,12 @@ const findReactNativeApps = async () => {
 // pollProcStats(pidId);
 // pollRamUsage(pidId);
 // pollFpsUsage(bundleId);
-pollCpuPerCoreUsage(pidId);
+
+pollCpuPerCoreUsage(pidId, ({ perName }) => {
+  console.log(perName[JS_THREAD_PROCESS_NAME]);
+});
+
+module.exports = {
+  getPidId,
+  pollCpuPerCoreUsage,
+};
