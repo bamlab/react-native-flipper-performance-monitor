@@ -29,7 +29,7 @@ I think they can complement each other.
 
 ```
 # This will print out JS Thread CPU Usage every 500ms
-npx react-native-profiler . com.coinbase.android
+npx react-native-profiler com.coinbase.android
 ```
 
 If you need to find an app's bundle id:
@@ -41,5 +41,5 @@ adb shell dumpsys window windows | grep -E 'mCurrentFocus|mFocusedApp|mInputMeth
 If you want a nice graph in your terminal, you can use [ttyplot](https://github.com/tenox7/ttyplot) and run:
 
 ```
-node . com.coinbase.android | ttyplot -s 100 -t "JS Thread CPU usage %" -u "%"
+npx react-native-profiler com.coinbase.android | ttyplot -s 100 -t "JS Thread CPU usage %" -u "%"
 ```
