@@ -1,5 +1,3 @@
-#if FB_SONARKIT_ENABLED
-
 #import "FlipperPerformancePlugin.h"
 #import <FlipperKit/FlipperConnection.h>
 // This ensures we can use [_bridge dispatchBlock]
@@ -148,4 +146,3 @@ static FlipperPerformancePlugin *_pluginSingleton = nil;
 }
 
 @end
-#endif
