@@ -1,5 +1,7 @@
 package tech.bam.rnperformance.flipper;
 
+import android.os.Handler;
+
 import androidx.annotation.NonNull;
 
 import com.facebook.react.bridge.Promise;
@@ -22,12 +24,13 @@ public class FlipperPerformancePluginModule extends ReactContextBaseJavaModule {
         return NAME;
     }
 
-    // Example method
-    // See https://reactnative.dev/docs/native-modules-android
     @ReactMethod
-    public void multiply(int a, int b, Promise promise) {
-        promise.resolve(a * b);
+    public void killUIThread(int intensity, Promise promise) {
+        final Handler mainHandler = new Handler(getReactApplicationContext().getMainLooper());
+        mainHandler.post(() -> promise.resolve(fibonacci(intensity)));
     }
 
-    public static native int nativeMultiply(int a, int b);
+    private int fibonacci(int n) {
+        return n < 1 ? 0 : n <= 2 ? 1 : fibonacci(n - 1) + fibonacci(n - 2);
+    }
 }
