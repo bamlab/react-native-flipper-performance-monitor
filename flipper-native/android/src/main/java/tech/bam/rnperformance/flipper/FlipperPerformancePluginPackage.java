@@ -1,4 +1,4 @@
-package com.reactnativeflipperperformanceplugin;
+package tech.bam.rnperformance.flipper;
 
 import androidx.annotation.NonNull;
 
