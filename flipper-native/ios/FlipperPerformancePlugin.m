@@ -145,4 +145,25 @@ static FlipperPerformancePlugin *_pluginSingleton = nil;
   return TRUE;
 }
 
+RCT_REMAP_METHOD(killUIThread,
+                 withIntensity:(nonnull NSNumber*)intensity
+                 withResolver:(RCTPromiseResolveBlock)resolve
+                 withRejecter:(RCTPromiseRejectBlock)reject)
+{
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [self fibonacci:[intensity intValue]];
+  });
+}
+
+- (int)fibonacci:(int)n {
+  if (n < 1) {
+    return 0;
+  }
+  if (n <= 2) {
+    return 1;
+  }
+
+  return [self fibonacci:(n - 1)] + [self fibonacci:(n - 2)];
+}
+
 @end
