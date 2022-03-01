@@ -17,6 +17,7 @@ public class FPSMonitor {
     public FpsDebugFrameCallback frameCallback;
     private FPSMonitorRunnable runnable;
     private MonitorCallback monitorCallback;
+    public static final int UPDATE_INTERVAL_MS = 500;
 
     public void start(ReactContext reactContext, MonitorCallback monitorCallback) {
         frameCallback = new FpsDebugFrameCallback(reactContext);
@@ -38,8 +39,6 @@ public class FPSMonitor {
         private boolean mShouldStop = false;
         private int mTotalFramesDropped = 0;
         private int mTotal4PlusFrameStutters = 0;
-
-        private static final int UPDATE_INTERVAL_MS = 500;
 
         final Handler handler = new Handler();
 

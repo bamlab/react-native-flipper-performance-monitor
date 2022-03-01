@@ -69,12 +69,16 @@ public class RNPerfMonitorPlugin implements FlipperPlugin {
                             return;
                         }
 
-                        final FlipperObject fpsData = new FlipperObject.Builder()
-                                .put("JS", jsFrames)
-                                .put("UI", uiFrames)
-                                .put("expected", expectedFrames)
-                                .build();
-                        connection.send("addRecord", fpsData);
+                        connection.send("addRecord", new FlipperObject.Builder()
+                                .put("frameCount", jsFrames)
+                                .put("time", FPSMonitor.UPDATE_INTERVAL_MS)
+                                .put("thread", "JS")
+                                .build());
+                        connection.send("addRecord", new FlipperObject.Builder()
+                                .put("frameCount", uiFrames)
+                                .put("time", FPSMonitor.UPDATE_INTERVAL_MS)
+                                .put("thread", "UI")
+                                .build());
                     }
                 });
             }
