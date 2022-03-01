@@ -1,4 +1,4 @@
-package com.reactnativeflipperperformanceplugin;
+package tech.bam.rnperformance.flipper;
 
 import androidx.annotation.NonNull;
 
@@ -21,7 +21,6 @@ public class FlipperPerformancePluginModule extends ReactContextBaseJavaModule {
     public String getName() {
         return NAME;
     }
-
 
     // Example method
     // See https://reactnative.dev/docs/native-modules-android
