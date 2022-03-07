@@ -63,7 +63,7 @@ public class RNPerfMonitorPlugin implements FlipperPlugin {
             public void run() {
                 fpsMonitor.start(reactInstanceManager.getCurrentReactContext(), new MonitorCallback() {
                     @Override
-                    public void setCurrentFPS(int uiFrames, int jsFrames, int expectedFrames) {
+                    public void setCurrentFPS(int uiFrames, int jsFrames, int timeInMs) {
                         if (connection == null) {
                             Log.w("PerfMonitor", "No connection to Flipper");
                             return;
@@ -71,12 +71,12 @@ public class RNPerfMonitorPlugin implements FlipperPlugin {
 
                         connection.send("addRecord", new FlipperObject.Builder()
                                 .put("frameCount", jsFrames)
-                                .put("time", FPSMonitor.UPDATE_INTERVAL_MS)
+                                .put("time", timeInMs)
                                 .put("thread", "JS")
                                 .build());
                         connection.send("addRecord", new FlipperObject.Builder()
                                 .put("frameCount", uiFrames)
-                                .put("time", FPSMonitor.UPDATE_INTERVAL_MS)
+                                .put("time", timeInMs)
                                 .put("thread", "UI")
                                 .build());
                     }

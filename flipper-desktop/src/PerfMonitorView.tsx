@@ -4,7 +4,7 @@ import { Report } from "./Report";
 import { StartButton } from "./components/StartButton";
 import { ScrollContainer } from "./components/ScrollContainer";
 import { Title } from "./components/Title";
-import { Measure } from "./types/Measure";
+import { Measure, ThreadMeasure } from "./types/Measure";
 import {
   Checkbox,
   FormControlLabel,
@@ -12,12 +12,20 @@ import {
   Typography,
   useTheme,
 } from "@material-ui/core";
+import { getTotalTimeAndFrames } from "./utils/getTotalTimeAndFrames";
+import { getFPS } from "./utils/getFPS";
+import { getThreadMeasures } from "./utils/getThreadMeasures";
 
-const sanitizeData = (fps: number) => {
-  if (fps > 60) return 60;
-  if (fps < 0) return 0;
-  return Math.ceil(fps);
-};
+const getFPSGraphData = (measures: ThreadMeasure[]) =>
+  measures.reduce<{ x: number; y: number }[]>((aggr, measure) => {
+    return [
+      ...aggr,
+      {
+        x: aggr.length > 0 ? aggr[aggr.length - 1].x + measure.time : 0,
+        y: getFPS(measure),
+      },
+    ];
+  }, []);
 
 const ControlsContainer = ({ children }: { children: ReactNode }) => (
   <div
@@ -93,30 +101,37 @@ export const PerfMonitorView = ({
   stopMeasuring: () => void;
   isMeasuring: boolean;
 }) => {
-  const getFPSGraphData = (key: "JS" | "UI") =>
-    measures
-      .map((measure) => (measure[key] / measure.expected) * 60)
-      .map(sanitizeData);
+  const JSThreadMeasures = getThreadMeasures(measures, "JS");
+  const UIThreadMeasures = getThreadMeasures(measures, "UI");
 
   const DEFAULT_TIME_LIMIT = 10000;
   const [timeLimitEnabled, setTimeLimitEnabled] = useState(true);
   const [timeLimit, setTimeLimit] = useState<number | null>(DEFAULT_TIME_LIMIT);
+
+  const { time: JSMeasuresTotalTime } = getTotalTimeAndFrames(JSThreadMeasures);
+  const { time: UIMeasuresTotalTime } = getTotalTimeAndFrames(UIThreadMeasures);
+
   useEffect(() => {
     if (
       timeLimitEnabled &&
       timeLimit &&
-      measures.length > timeLimit / MEASURE_INTERVAL
+      (UIMeasuresTotalTime - UIThreadMeasures[0]?.time >= timeLimit ||
+        JSMeasuresTotalTime - JSThreadMeasures[0]?.time >= timeLimit)
     ) {
       stopMeasuring();
     }
-  }, [timeLimit, measures]);
+  }, [timeLimit, JSMeasuresTotalTime, UIMeasuresTotalTime, timeLimitEnabled]);
 
   const { palette } = useTheme();
 
   return (
     <ScrollContainer>
       <Title />
-      <Report measures={measures} isMeasuring={isMeasuring} />
+      <Report
+        jsMeasures={JSThreadMeasures}
+        uiMeasures={UIThreadMeasures}
+        isMeasuring={isMeasuring}
+      />
       <ControlsContainer>
         <StartButton
           isMeasuring={isMeasuring}
@@ -131,7 +146,7 @@ export const PerfMonitorView = ({
         />
       </ControlsContainer>
       <Chart
-        data={getFPSGraphData("JS")}
+        data={getFPSGraphData(JSThreadMeasures)}
         height={350}
         title="JS FPS"
         interval={MEASURE_INTERVAL}
@@ -139,7 +154,7 @@ export const PerfMonitorView = ({
         color={palette.primary.light}
       />
       <Chart
-        data={getFPSGraphData("UI")}
+        data={getFPSGraphData(UIThreadMeasures)}
         height={350}
         title="UI FPS"
         interval={MEASURE_INTERVAL}
