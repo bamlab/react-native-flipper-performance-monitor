@@ -71,6 +71,9 @@ static FlipperPerformancePlugin *_pluginSingleton = nil;
 
 - (void)startMeasuring
 {
+  [jsFrameCountHolder setPreviousTime:-1];
+  [uiFrameCountHolder setPreviousTime:-1];
+
   // See https://github.com/facebook/react-native/blob/1465c8f3874cdee8c325ab4a4916fda0b3e43bdb/React/CoreModules/RCTPerfMonitor.mm#L338
   _uiDisplayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(onUIFrame:)];
   [_uiDisplayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];

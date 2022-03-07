@@ -17,18 +17,29 @@ const setupPlugin = () => {
 
   // First measure on Android is always 0 and is ignored by plugin
   sendEvent("addRecord", {
-    JS: 0,
-    UI: 0,
-    expected: 30,
+    frameCount: 0,
+    thread: "JS",
+    time: 500,
+  });
+  sendEvent("addRecord", {
+    frameCount: 0,
+    thread: "UI",
+    time: 500,
   });
 
   return {
-    addMeasure: ({ JS, UI }: { JS: number; UI: number }) =>
+    addMeasure: ({ JS, UI }: { JS: number; UI: number }) => {
       sendEvent("addRecord", {
-        JS,
-        UI,
-        expected: 30,
-      }),
+        frameCount: JS,
+        thread: "JS",
+        time: 500,
+      });
+      sendEvent("addRecord", {
+        frameCount: UI,
+        thread: "UI",
+        time: 500,
+      });
+    },
     clickStart: () => fireEvent.click(renderer.getByText("Start Measuring")),
     clickStop: () => fireEvent.click(renderer.getByText("Stop Measuring")),
     expectToMatchSnapshot: () => {
@@ -103,4 +114,12 @@ test("continues after set time limit if time limit disabled", () => {
   // 1000ms means 3 measures would be displayed: 0, 500 and 1000
   addMeasure({ JS: 30, UI: 30 });
   expect(onSend).not.toHaveBeenCalledWith("stopMeasuring", undefined);
+});
+
+test("it should sanitize data", () => {
+  const { addMeasure, expectToMatchSnapshot } = setupPlugin();
+
+  addMeasure({ JS: 120, UI: 150 });
+
+  expectToMatchSnapshot();
 });

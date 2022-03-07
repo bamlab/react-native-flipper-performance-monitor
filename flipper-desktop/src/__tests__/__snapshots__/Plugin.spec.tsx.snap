@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`displays FPS data and scoring 1`] = `"Performance35Average JS FPS30Average UI FPS55JS  threadlock0.506s (50%)Start MeasuringEnable time limit of ms"`;
+exports[`displays FPS data and scoring 1`] = `"Performance35Average JS FPS30Average UI FPS55JS  threadlock0.5s (50%)Start MeasuringEnable time limit of ms"`;
 
 exports[`displays FPS data and scoring 2`] = `
 <body>
@@ -105,7 +105,7 @@ exports[`displays FPS data and scoring 2`] = `
             <td
               class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight"
             >
-              0.506s (50%)
+              0.5s (50%)
             </td>
           </tr>
         </tbody>
@@ -158,6 +158,228 @@ exports[`displays FPS data and scoring 2`] = `
                   aria-label="Time limit enabled"
                   checked=""
                   class="PrivateSwitchBase-input-6"
+                  data-indeterminate="false"
+                  type="checkbox"
+                  value=""
+                />
+                <svg
+                  aria-hidden="true"
+                  class="MuiSvgIcon-root"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
+                  />
+                </svg>
+              </span>
+              <span
+                class="MuiTouchRipple-root"
+              />
+            </span>
+            <span
+              class="MuiTypography-root MuiFormControlLabel-label MuiTypography-body1"
+            >
+              Enable time limit of 
+            </span>
+          </label>
+          <div
+            class="MuiFormControl-root MuiTextField-root"
+          >
+            <div
+              class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
+            >
+              <input
+                aria-invalid="false"
+                aria-label="Time limit"
+                class="MuiInputBase-input MuiInput-input"
+                type="number"
+                value="10000"
+              />
+            </div>
+          </div>
+          <p
+            class="MuiTypography-root MuiTypography-body1"
+          >
+            ms
+          </p>
+        </div>
+      </div>
+      <apex-charts
+        height="350"
+        options="[object Object]"
+        series="[object Object]"
+        type="line"
+      />
+      <apex-charts
+        height="350"
+        options="[object Object]"
+        series="[object Object]"
+        type="line"
+      />
+    </div>
+  </div>
+</body>
+`;
+
+exports[`it should sanitize data 1`] = `"Performance100Average JS FPS60Average UI FPS60JS  threadlock0s (0%)Start MeasuringEnable time limit of ms"`;
+
+exports[`it should sanitize data 2`] = `
+<body>
+  <div>
+    <div
+      class="css-1baaral"
+    >
+      <h3
+        class="MuiTypography-root MuiTypography-h3"
+        style="text-align: center; width: 100%; padding-bottom: 20px;"
+      >
+        Performance
+      </h3>
+      <div
+        style="justify-content: center; align-items: center; width: 100%; display: flex; margin-bottom: 20px;"
+      >
+        <div
+          class="MuiBox-root MuiBox-root-25"
+        >
+          <div
+            aria-valuenow="100"
+            class="MuiCircularProgress-root MuiCircularProgress-colorPrimary MuiCircularProgress-determinate"
+            role="progressbar"
+            style="width: 80px; height: 80px; transform: rotate(-90deg); color: rgb(46, 204, 64);"
+          >
+            <svg
+              class="MuiCircularProgress-svg"
+              viewBox="22 22 44 44"
+            >
+              <circle
+                class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate"
+                cx="44"
+                cy="44"
+                fill="none"
+                r="20.2"
+                stroke-width="3.6"
+                style="stroke-dasharray: 126.920; stroke-dashoffset: 0.000px;"
+              />
+            </svg>
+          </div>
+          <div
+            class="MuiBox-root MuiBox-root-26"
+          >
+            <div
+              class="MuiTypography-root MuiTypography-caption MuiTypography-colorTextSecondary"
+              style="font-size: 28px; color: rgb(46, 204, 64);"
+            >
+              100
+            </div>
+          </div>
+        </div>
+      </div>
+      <table
+        aria-label="simple table"
+        class="MuiTable-root"
+      >
+        <tbody
+          class="MuiTableBody-root"
+        >
+          <tr
+            class="MuiTableRow-root"
+          >
+            <th
+              class="MuiTableCell-root MuiTableCell-body"
+              role="cell"
+              scope="row"
+            >
+              Average JS FPS
+            </th>
+            <td
+              class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight"
+            >
+              60
+            </td>
+          </tr>
+          <tr
+            class="MuiTableRow-root"
+          >
+            <th
+              class="MuiTableCell-root MuiTableCell-body"
+              role="cell"
+              scope="row"
+            >
+              Average UI FPS
+            </th>
+            <td
+              class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight"
+            >
+              60
+            </td>
+          </tr>
+          <tr
+            class="MuiTableRow-root"
+          >
+            <th
+              class="MuiTableCell-root MuiTableCell-body"
+              role="cell"
+              scope="row"
+            >
+              JS  threadlock
+            </th>
+            <td
+              class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight"
+            >
+              0s (0%)
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div
+        style="margin: 10px; display: flex; flex-direction: row; justify-content: center;"
+      >
+        <button
+          class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="MuiButton-label"
+          >
+            <span
+              class="MuiButton-startIcon MuiButton-iconSizeMedium"
+            >
+              <svg
+                aria-hidden="true"
+                class="MuiSvgIcon-root"
+                focusable="false"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M8 5v14l11-7z"
+                />
+              </svg>
+            </span>
+            Start Measuring
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </button>
+        <div
+          style="margin-left: 10px; display: flex; flex-direction: row; align-items: center;"
+        >
+          <label
+            class="MuiFormControlLabel-root"
+          >
+            <span
+              aria-disabled="false"
+              class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-27 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-checked-28 Mui-checked MuiIconButton-colorSecondary"
+            >
+              <span
+                class="MuiIconButton-label"
+              >
+                <input
+                  aria-label="Time limit enabled"
+                  checked=""
+                  class="PrivateSwitchBase-input-30"
                   data-indeterminate="false"
                   type="checkbox"
                   value=""
