@@ -42,7 +42,7 @@ export function plugin(client: PluginClient<Events, Methods>) {
 export function Component() {
   const instance = usePlugin(plugin);
   // First measure is usually 0 regardless of performance
-  const measures = useValue(instance.measures).slice(1);
+  const measures = useValue(instance.measures).slice(2);
 
   const [isMeasuring, setIsMeasuring] = useState(false);
   const start = () => {

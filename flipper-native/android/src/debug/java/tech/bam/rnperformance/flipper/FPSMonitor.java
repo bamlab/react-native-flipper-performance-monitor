@@ -9,7 +9,7 @@ interface MonitorCallback {
     void setCurrentFPS(
             int uiFrames,
             int jsFrames,
-            int expectedFrames
+            int timeInMs
     );
 }
 
@@ -53,7 +53,7 @@ public class FPSMonitor {
             monitorCallback.setCurrentFPS(
                     frameCallback.getNumFrames(),
                     frameCallback.getNumJSFrames(),
-                    frameCallback.getExpectedNumFrames()
+                    frameCallback.getTotalTimeMS()
             );
             frameCallback.reset();
 
