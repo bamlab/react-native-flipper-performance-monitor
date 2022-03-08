@@ -2,8 +2,6 @@
 
 [![Build Status](https://app.travis-ci.com/bamlab/react-native-performance.svg?branch=master)](https://app.travis-ci.com/bamlab/react-native-performance)
 
-Only Android is supported for now. Add a 👍 on [this issue](https://github.com/bamlab/react-native-performance/issues/18) if you want to see iOS support.
-
 ![rn-perf-monitor](https://user-images.githubusercontent.com/4534323/151138734-dc9af3b1-1e96-4416-8abd-346597a4dbe8.gif)
 
 ## Usage
@@ -40,6 +38,27 @@ yarn add --dev react-native-flipper-performance-plugin
 Then go to iOS/Android section below to continue the install
 
 #### iOS
+
+- Run `cd ios && pod install`
+
+- In `./ios/yourapp/AppDelegate.m` (where `yourapp` depends on your app), add 2 lines:
+
+```objc
+#ifdef FB_SONARKIT_ENABLED
+...
+// Add this line
+#import <FlipperPerformancePlugin.h>
+
+static void InitializeFlipper(UIApplication *application) {
+  ...
+
+  // Add this line
+  [client addPlugin:[FlipperPerformancePlugin new]];
+
+  [client start];
+}
+#endif
+```
 
 #### Android
 
