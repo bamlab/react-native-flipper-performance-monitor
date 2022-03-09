@@ -2,7 +2,7 @@
   "$schema": "https://fbflipper.com/schemas/plugin-package/v2.json",
   "name": "flipper-plugin-rn-perf-monitor",
   "id": "rn-perf-monitor",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "main": "dist/bundle.js",
   "flipperBundlerEntry": "src/index.tsx",
   "license": "MIT",
