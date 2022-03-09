@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { createState, PluginClient, usePlugin, useValue } from "flipper-plugin";
 import { Measure } from "./types/Measure";
 import { PerfMonitorView } from "./PerfMonitorView";
+import { openMigrationDialog } from "./openMigrationDialog";
 
 type Events = {
   addRecord: Measure;
@@ -18,6 +19,13 @@ export function plugin(client: PluginClient<Events, Methods>) {
   });
 
   client.onMessage("addRecord", (measure) => {
+    // This happens only if users have the previous Android plugin installed
+    // @ts-ignore
+    if (measure.expected !== undefined) {
+      stopMeasuring();
+      openMigrationDialog();
+      return;
+    }
     measures.update((draft) => {
       draft.push(measure);
     });
