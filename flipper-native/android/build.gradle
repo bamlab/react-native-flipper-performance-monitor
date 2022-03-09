@@ -17,7 +17,7 @@ android {
 }
 
 dependencies {
-    compileOnly 'com.facebook.flipper:flipper:0.87.0'
+    debugCompileOnly 'com.facebook.flipper:flipper:0.125.0'
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:${safeExtGet('reactNativeVersion', '+')}"
 }

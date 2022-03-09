@@ -2,7 +2,9 @@ import React from "react";
 import { CircularProgressWithLabel } from "./components/CircularProgressWithLabel";
 import { Table } from "./components/Table";
 import { round } from "./utils/round";
-import { Measure } from "./types/Measure";
+import { ThreadMeasure } from "./types/Measure";
+import { getTotalTimeAndFrames } from "./utils/getTotalTimeAndFrames";
+import { getFPS } from "./utils/getFPS";
 
 const getColor = (score: number) => {
   if (score >= 90) return "#2ECC40";
@@ -10,77 +12,60 @@ const getColor = (score: number) => {
   return "#FF4136";
 };
 
+const getTimeThreadlocked = (jsMeasures: ThreadMeasure[]) => {
+  return jsMeasures.reduce((totalTimeLocked, measure) => {
+    if (measure.frameCount < 1) {
+      return totalTimeLocked + measure.time;
+    }
+
+    return totalTimeLocked;
+  }, 0);
+};
+
 export const Report = ({
-  measures,
+  jsMeasures,
+  uiMeasures,
   isMeasuring,
 }: {
-  measures: Measure[];
+  jsMeasures: ThreadMeasure[];
+  uiMeasures: ThreadMeasure[];
   isMeasuring: boolean;
 }) => {
-  const displayPlaceholder = measures.length === 0 || isMeasuring;
+  const displayPlaceholder =
+    jsMeasures.length === 0 || uiMeasures.length === 0 || isMeasuring;
 
-  const getFrameCount = () => {
-    return measures.reduce(
-      ({ UI, JS, expected }, measure) => ({
-        UI: UI + measure.UI,
-        JS: JS + measure.JS,
-        expected: expected + measure.expected,
-      }),
-      { UI: 0, JS: 0, expected: 0 }
-    );
-  };
+  const jsTotalTimeAndTotalFrames = getTotalTimeAndFrames(jsMeasures);
+  const averageJSFPS = getFPS(jsTotalTimeAndTotalFrames);
+  const averageUIFPS = getFPS(getTotalTimeAndFrames(uiMeasures));
 
-  const getAverageFPS = () => {
-    const { UI, JS, expected } = getFrameCount();
-
-    return {
-      UI: (UI * 60) / expected,
-      JS: (JS * 60) / expected,
-    };
-  };
-
-  const getJSDeadlockTime = () => {
-    const { locked, total } = measures.reduce(
-      ({ locked, total }, { JS, expected }) => ({
-        locked: locked + (JS < 1 ? expected : 0),
-        total: total + expected,
-      }),
-      { locked: 0, total: 0 }
-    );
-
-    return {
-      time: (locked * 16.9) / 1000,
-      percentage: locked / total,
-    };
-  };
+  const totalTimeThreadlocked = getTimeThreadlocked(jsMeasures);
+  const timePercentageThreadlocked =
+    totalTimeThreadlocked / jsTotalTimeAndTotalFrames.time;
 
   const getScore = () => {
-    const averageFPS = getAverageFPS();
+    const fpsScore = ((averageUIFPS + averageJSFPS) * 100) / 120;
 
-    const fpsScore = ((averageFPS.UI + averageFPS.JS) * 100) / 120;
-    const jsLockMalus = getJSDeadlockTime().percentage;
-
-    return round(Math.max(0, fpsScore * (1 - jsLockMalus)), 0);
+    return round(Math.max(0, fpsScore * (1 - timePercentageThreadlocked)), 0);
   };
 
   const getReportRows = () => {
-    const averageFPS = getAverageFPS();
-    const jsLock = getJSDeadlockTime();
-
     return [
       {
         title: "Average JS FPS",
-        value: displayPlaceholder ? "-" : round(averageFPS.JS, 1),
+        value: displayPlaceholder ? "-" : round(averageJSFPS, 1),
       },
       {
         title: "Average UI FPS",
-        value: displayPlaceholder ? "-" : round(averageFPS.UI, 1),
+        value: displayPlaceholder ? "-" : round(averageUIFPS, 1),
       },
       {
         title: "JS  threadlock",
         value: displayPlaceholder
           ? "-"
-          : `${round(jsLock.time, 3)}s (${round(jsLock.percentage * 100, 2)}%)`,
+          : `${round(totalTimeThreadlocked / 1000, 3)}s (${round(
+              timePercentageThreadlocked * 100,
+              2
+            )}%)`,
       },
     ];
   };
