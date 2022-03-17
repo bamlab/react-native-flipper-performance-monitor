@@ -81,7 +81,7 @@ You also need to run these steps:
 Uninstall the package:
 
 ```
-yarn remove --dev flipper-plugin-rn-performance-android
+yarn remove flipper-plugin-rn-performance-android
 ```
 
 Then **remove** those lines in `./android/settings.gradle`:
