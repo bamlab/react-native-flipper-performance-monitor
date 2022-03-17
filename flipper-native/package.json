@@ -1,6 +1,6 @@
 {
   "name": "react-native-flipper-performance-plugin",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Native side of flipper-rn-perf-monitor plugin",
   "repository": "https://github.com/bamlab/react-native-performance",
   "author": "almouro <contact@almouro.com> (https://github.com/Almouro)",
