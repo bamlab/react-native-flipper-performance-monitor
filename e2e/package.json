@@ -1,0 +1,21 @@
+{
+  "name": "appium-e2e",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jest": "^26.0.3",
+    "@types/jest-image-snapshot": "^4.3.1",
+    "jest": "^26.1.0",
+    "jest-image-snapshot": "^4.0.2",
+    "ts-jest": "^26.1.1",
+    "typescript": "^3.9.6"
+  },
+  "dependencies": {
+    "appium": "^1.17.1",
+    "shelljs": "^0.8.4",
+    "webdriverio": "^6.1.22"
+  }
+}
