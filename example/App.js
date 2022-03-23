@@ -15,7 +15,7 @@ import {
   killUIThread,
 } from 'react-native-flipper-performance-plugin';
 
-const Button = ({title, onPress, style}) => (
+const Button = ({title, onPress, style, testID}) => (
   <TouchableOpacity
     style={[
       {
@@ -26,6 +26,7 @@ const Button = ({title, onPress, style}) => (
       },
       style,
     ]}
+    testID={testID}
     onPress={onPress}>
     <Text style={{fontSize: 40, color: 'white'}}>{title}</Text>
   </TouchableOpacity>
@@ -47,11 +48,13 @@ const App = () => {
         }}>
         <Button
           title={'KILL JS ☠️'}
+          testID="com.example/kill_js"
           onPress={() => killJSThread(40)}
           style={{marginBottom: 40, backgroundColor: '#1565c0'}}
         />
         <Button
           title={'KILL UI ☠️'}
+          testID="com.example/kill_ui"
           onPress={() => killUIThread(40)}
           style={{backgroundColor: '#7b1fa2'}}
         />
