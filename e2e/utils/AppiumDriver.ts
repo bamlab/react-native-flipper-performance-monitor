@@ -32,8 +32,8 @@ export class AppiumDriver {
       capabilities: {
         platformName: "Android",
         automationName: "UiAutomator2",
-        appPackage: "fr.pmu.hippique",
-        appActivity: "fr.pmu.pump.MainActivity",
+        appPackage,
+        appActivity,
         // See https://github.com/appium/appium/blob/1e30207ec4e413c64396420fbb0388392e88cc54/docs/en/writing-running-appium/other/reset-strategies.md
         noReset: true,
         autoLaunch: false,
