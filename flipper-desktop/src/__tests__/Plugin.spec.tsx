@@ -28,16 +28,24 @@ const setupPlugin = () => {
   });
 
   return {
-    addMeasure: ({ JS, UI }: { JS: number; UI: number }) => {
+    addMeasure: ({
+      JS,
+      UI,
+      time,
+    }: {
+      JS: number;
+      UI: number;
+      time?: number;
+    }) => {
       sendEvent("addRecord", {
         frameCount: JS,
         thread: "JS",
-        time: 500,
+        time: time || 500,
       });
       sendEvent("addRecord", {
         frameCount: UI,
         thread: "UI",
-        time: 500,
+        time: time || 500,
       });
     },
     clickStart: () => fireEvent.click(renderer.getByText("Start Measuring")),
@@ -122,4 +130,14 @@ test("it should sanitize data", () => {
   addMeasure({ JS: 120, UI: 150 });
 
   expectToMatchSnapshot();
+});
+
+test("it should handle time being a bit longer than 500ms but still achieving a correct frame count", () => {
+  const { addMeasure, renderer } = setupPlugin();
+
+  addMeasure({ JS: 30, UI: 30, time: 502 });
+
+  expect((renderer.baseElement as HTMLBodyElement).textContent).toContain(
+    "Average JS FPS59.7"
+  );
 });
