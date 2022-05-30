@@ -1,12 +1,6 @@
 import { fireEvent } from "@testing-library/dom";
 import { TestUtils } from "flipper-plugin";
 import * as Plugin from "..";
-import "@testing-library/jest-dom";
-
-// See https://github.com/facebook/flipper/pull/3327
-// @ts-ignore
-global.electronRequire = require;
-require("@testing-library/react");
 
 // See https://github.com/apexcharts/react-apexcharts/issues/52
 jest.mock("react-apexcharts", () => "apex-charts");
