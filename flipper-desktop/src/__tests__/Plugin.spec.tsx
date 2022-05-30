@@ -1,6 +1,7 @@
 import { fireEvent } from "@testing-library/dom";
 import { TestUtils } from "flipper-plugin";
 import * as Plugin from "..";
+import "@testing-library/jest-dom";
 
 // See https://github.com/facebook/flipper/pull/3327
 // @ts-ignore
@@ -137,7 +138,5 @@ test("it should handle time being a bit longer than 500ms but still achieving a 
 
   addMeasure({ JS: 30, UI: 30, time: 502 });
 
-  expect((renderer.baseElement as HTMLBodyElement).textContent).toContain(
-    "Average JS FPS59.7"
-  );
+  expect(renderer.baseElement).toHaveTextContent("Average JS FPS59.7");
 });
