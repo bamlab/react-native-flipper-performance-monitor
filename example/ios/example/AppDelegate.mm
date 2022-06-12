@@ -25,10 +25,25 @@
 @end
 #endif
 
+#ifdef FB_SONARKIT_ENABLED
+
+#import <FlipperKit/FlipperClient.h>
+#import <FlipperPerformancePlugin.h>
+
+// Basically putting back https://github.com/facebook/react-native/commit/73a04d145251ad2aad8afb587d3fd0c746c9f00f#diff-68bc28be95c8d0faa843c16d1c24d21731a744801e1ab5c55ce7342a399c1f54L15
+static void InitializeFlipper(UIApplication *application) {
+  FlipperClient *client = [FlipperClient sharedClient];
+  [client addPlugin:[FlipperPerformancePlugin new]];
+}
+#endif
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+#ifdef FB_SONARKIT_ENABLED
+  InitializeFlipper(application);
+#endif
   RCTAppSetupPrepareApp(application);
 
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
