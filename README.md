@@ -41,6 +41,35 @@ Then go to iOS/Android section below to continue the install
 
 - Run `cd ios && pod install`
 
+Then depending on your RN version:
+
+##### >= v0.68.0
+
+- In `./ios/yourapp/AppDelegate.mm` (where `yourapp` depends on your app), add those 8 lines below:
+
+_(You can check how it's done in [the example folder](https://github.com/bamlab/react-native-performance/blob/master/example/ios/example/AppDelegate.mm))_
+
+```objc
+// Add those 4 lines before @implementation AppDelegate
+#ifdef FB_SONARKIT_ENABLED
+#import <FlipperKit/FlipperClient.h>
+#import <FlipperPerformancePlugin.h>
+#endif
+
+@implementation AppDelegate
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+// And those 4 lines before RCTAppSetupPrepareApp
+#ifdef FB_SONARKIT_ENABLED
+  FlipperClient *client = [FlipperClient sharedClient];
+  [client addPlugin:[FlipperPerformancePlugin new]];
+#endif
+  RCTAppSetupPrepareApp(application);
+```
+
+##### < 0.68.0
+
 - In `./ios/yourapp/AppDelegate.m` (where `yourapp` depends on your app), add 2 lines:
 
 ```objc
