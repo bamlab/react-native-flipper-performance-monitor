@@ -101,6 +101,56 @@ import tech.bam.rnperformance.flipper.RNPerfMonitorPlugin;
 client.addPlugin(new RNPerfMonitorPlugin());
 ```
 
+## Usage with Expo
+
+1. This plugin does not work with Expo Go, since it adds native code. You can use an Expo [custom-dev-client](https://docs.expo.dev/development/getting-started/) instead.
+
+2. Install the **Expo Flipper plugin**. Documentation can be found here: [Expo Community Flipper](https://github.com/jakobo/expo-community-flipper).
+   Install the module along with [react-native-flipper](https://www.npmjs.com/package/react-native-flipper):
+
+   _TL;DR_: `yarn add -D expo-community-flipper react-native-flipper`
+
+3. Add `expo-community-flipper` configuration to the `plugins` section of your `app.json`. Please check [Expo Community Flipper documentation](https://github.com/jakobo/expo-community-flipper) if you need further settings.
+
+4. Add the plugin to this library **AFTER ** `expo-community-flipper`
+
+```json
+{
+  "expo": {
+    "..."
+    "plugins": [
+      ["expo-community-flipper"], // first
+      ["react-native-flipper-performance-plugin"] // add this after
+    ]
+  }
+}
+```
+
+Make sure to run `expo prebuild` or `expo prebuild --clean` afterwards. If the plugin is not recognized on iOS, make sure you call `npx pod-install` or `cd ios && pod install` in the root directory of your project.
+
+#### Best practice
+
+This library helps you to calculate a Lighthouse score similar to PageSpeed Insights. However, the tool is of no use to you if you cannot draw any optimizations from it. That is why it is recommended to use the plugin together with React DevTools.
+
+The easiest way to use React DevTools is to install it as follows:
+
+`yarn add -D react-devtools-core`
+
+Then edit your App.tsx/App.js with following default settings.
+
+```tsx
+import { connectToDevTools } from "react-devtools-core";
+
+if (__DEV__) {
+  connectToDevTools({
+    host: "localhost",
+    port: 8097,
+  });
+}
+```
+
+With DevTools you can easily determine why your app is taking too much time for a particular task, most importantly you can find out if you are re-rendering too often. Especially with lists, this can quickly become a knitting trap. Optimize your code and measure the FPS afterwards to get a decent score.
+
 #### Migrating from flipper-plugin-rn-performance-android
 
 You might have previously installed `flipper-plugin-rn-performance-android`. This is now deprecated, as `react-native-flipper-performance-plugin` has autolinking and cross-platform support.
