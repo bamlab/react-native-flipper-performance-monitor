@@ -4,6 +4,22 @@
 
 ![rn-perf-monitor](https://user-images.githubusercontent.com/4534323/151138734-dc9af3b1-1e96-4416-8abd-346597a4dbe8.gif)
 
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+- [Usage](#usage)
+- [Install](#install)
+  - [Flipper](#flipper)
+  - [Install for non-Expo projects](#install-for-non-expo-projects)
+    - [iOS](#ios)
+    - [Android](#android)
+    - [Migrating from flipper-plugin-rn-performance-android](#migrating-from-flipper-plugin-rn-performance-android)
+  - [Install for Expo projects](#install-for-expo-projects)
+    - [Best practice](#best-practice)
+- [Contributing](#contributing-to-flipper-desktop)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 ## Usage
 
 [Here's a detailed article](https://blog.bam.tech/developer-news/measuring-and-improving-performance-on-a-react-native-app) to go further
@@ -27,7 +43,7 @@ Note that:
 
 Search for `rn-perf-monitor` in the list of plugins.
 
-### Install Android/iOS plugin
+### Install for non-Expo projects
 
 Install the plugin
 
@@ -101,7 +117,32 @@ import tech.bam.rnperformance.flipper.RNPerfMonitorPlugin;
 client.addPlugin(new RNPerfMonitorPlugin(reactInstanceManager));
 ```
 
-## Usage with Expo
+#### Migrating from flipper-plugin-rn-performance-android
+
+You might have previously installed `flipper-plugin-rn-performance-android`. This is now deprecated, as `react-native-flipper-performance-plugin` has autolinking and cross-platform support.
+
+You also need to run these steps:
+
+Uninstall the package:
+
+```
+yarn remove flipper-plugin-rn-performance-android
+```
+
+Then **remove** those lines in `./android/settings.gradle`:
+
+```gradle
+include ':flipper-plugin-rn-performance-android'
+project(':flipper-plugin-rn-performance-android').projectDir = new File(rootProject.projectDir, '../node_modules/flipper-plugin-rn-performance-android')
+```
+
+and in `./android/app/build.gradle`:
+
+```gradle
+debugImplementation project(':flipper-plugin-rn-performance-android')
+```
+
+### Install for Expo projects
 
 1. This plugin does not work with Expo Go, since it adds native code. You can use an Expo [custom-dev-client](https://docs.expo.dev/development/getting-started/) instead.
 
@@ -150,31 +191,6 @@ if (__DEV__) {
 ```
 
 With DevTools you can easily determine why your app is taking too much time for a particular task, most importantly you can find out if you are re-rendering too often. Especially with lists, this can quickly become a knitting trap. Optimize your code and measure the FPS afterwards to get a decent score.
-
-#### Migrating from flipper-plugin-rn-performance-android
-
-You might have previously installed `flipper-plugin-rn-performance-android`. This is now deprecated, as `react-native-flipper-performance-plugin` has autolinking and cross-platform support.
-
-You also need to run these steps:
-
-Uninstall the package:
-
-```
-yarn remove flipper-plugin-rn-performance-android
-```
-
-Then **remove** those lines in `./android/settings.gradle`:
-
-```gradle
-include ':flipper-plugin-rn-performance-android'
-project(':flipper-plugin-rn-performance-android').projectDir = new File(rootProject.projectDir, '../node_modules/flipper-plugin-rn-performance-android')
-```
-
-and in `./android/app/build.gradle`:
-
-```gradle
-debugImplementation project(':flipper-plugin-rn-performance-android')
-```
 
 ## Contributing to flipper Desktop
 
