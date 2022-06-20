@@ -32,7 +32,6 @@ public class RNPerfMonitorPlugin implements FlipperPlugin {
 	}
 
 	// Keeping this constructor for retrocompatibility
-	@Deprecated
     public RNPerfMonitorPlugin(ReactInstanceManager reactInstanceManager) {
         fpsMonitor = new FPSMonitor();
     }
