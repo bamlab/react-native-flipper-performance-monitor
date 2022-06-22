@@ -153,7 +153,7 @@ debugImplementation project(':flipper-plugin-rn-performance-android')
 
 3. Add `expo-community-flipper` configuration to the `plugins` section of your `app.json`. Please check [Expo Community Flipper documentation](https://github.com/jakobo/expo-community-flipper) if you need further settings.
 
-4. Add the plugin to this library **AFTER ** `expo-community-flipper`
+4. Add the plugin to this library **AFTER** `expo-community-flipper`
 
 ```json
 {
