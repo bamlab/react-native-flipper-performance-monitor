@@ -1,6 +1,6 @@
 # React Native Performance Monitor Flipper plugin
 
-[![Build Status](https://app.travis-ci.com/bamlab/react-native-performance.svg?branch=master)](https://app.travis-ci.com/bamlab/react-native-performance)
+[![Build Status](https://app.travis-ci.com/bamlab/react-native-flipper-performance-monitor.svg?branch=master)](https://app.travis-ci.com/bamlab/react-native-performance)
 
 ![rn-perf-monitor](https://user-images.githubusercontent.com/4534323/151138734-dc9af3b1-1e96-4416-8abd-346597a4dbe8.gif)
 
