@@ -1,4 +1,6 @@
 #import "FlipperPerformancePlugin.h"
+
+#if __has_include(<FlipperKit/FlipperPlugin.h>)
 #import <FlipperKit/FlipperConnection.h>
 // This ensures we can use [_bridge dispatchBlock]
 #import <React/RCTBridge+Private.h>
@@ -170,3 +172,11 @@ RCT_REMAP_METHOD(killUIThread,
 }
 
 @end
+
+#else
+
+@implementation FlipperPerformancePlugin
+
+@end
+
+#endif
