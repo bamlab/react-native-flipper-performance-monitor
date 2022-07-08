@@ -1,3 +1,5 @@
+#ifdef DEBUG
+
 #import "FlipperPerformancePlugin.h"
 #import <FlipperKit/FlipperConnection.h>
 // This ensures we can use [_bridge dispatchBlock]
@@ -170,3 +172,5 @@ RCT_REMAP_METHOD(killUIThread,
 }
 
 @end
+
+#endif

@@ -1,3 +1,5 @@
+#ifdef DEBUG
+
 #import <Foundation/Foundation.h>
 
 #import <FlipperKit/FlipperPlugin.h>
@@ -6,3 +8,5 @@
 @interface FlipperPerformancePlugin : NSObject<RCTBridgeModule, FlipperPlugin>
 
 @end
+
+#endif
