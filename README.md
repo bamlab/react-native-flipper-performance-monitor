@@ -114,7 +114,7 @@ import tech.bam.rnperformance.flipper.RNPerfMonitorPlugin;
 
 ...
 
-client.addPlugin(new RNPerfMonitorPlugin());
+client.addPlugin(new RNPerfMonitorPlugin(reactInstanceManager));
 ```
 
 #### Migrating from flipper-plugin-rn-performance-android
