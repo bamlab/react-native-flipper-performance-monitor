@@ -112,7 +112,7 @@ async function addReactNativePerformancePluginForExpoAndroid(
       patchedContents = mergeContents({
         tag: "react-native-performance-plugin-expo-addplugin",
         src: patchedContents,
-        newSrc: `      client.addPlugin(new RNPerfMonitorPlugin());`,
+        newSrc: `      client.addPlugin(new RNPerfMonitorPlugin(reactInstanceManager));`,
         anchor: /client.start()/g,
         offset: -1,
         comment: "//",
