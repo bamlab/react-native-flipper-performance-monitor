@@ -5429,10 +5429,10 @@ react-native-codegen@^0.70.5:
     jscodeshift "^0.13.1"
     nullthrows "^1.1.1"
 
-react-native-flipper-performance-plugin@0.4.0-rc.0:
-  version "0.4.0-rc.0"
-  resolved "https://registry.yarnpkg.com/react-native-flipper-performance-plugin/-/react-native-flipper-performance-plugin-0.4.0-rc.0.tgz#0039c0357c98bc88f82ab11145247bbe11609de5"
-  integrity sha512-TfXZroMcYbmSQgSVUAwFewDE4G3jbcLK4NdqzP3h1dgF4eaC6Kddj5fRdtlxMYL/ufnKowaANHT/U59dbMNa2w==
+react-native-flipper-performance-plugin@0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/react-native-flipper-performance-plugin/-/react-native-flipper-performance-plugin-0.4.0.tgz#961ff2f9ccc942d2a4cabd4f6d401034c5402007"
+  integrity sha512-D9Z5VrktJjUenYB4X9qfKcqg9YSyQWOD7fKoxkzXoKxbyalGoWib79iD3OBHOBZEsk5RbQ006zYL7VQwA3D4Wg==
 
 react-native-gradle-plugin@^0.70.3:
   version "0.70.3"
