@@ -88,7 +88,7 @@ const TimeLimitControl = ({
 );
 
 // This is the same value as defined here: https://github.com/bamlab/react-native-performance/blob/master/flipper-android/src/main/java/tech/bam/rnperformance/FPSMonitor.java#L42
-const MEASURE_INTERVAL = 500;
+const MEASURE_INTERVAL = 1000;
 
 export const PerfMonitorView = ({
   measures,

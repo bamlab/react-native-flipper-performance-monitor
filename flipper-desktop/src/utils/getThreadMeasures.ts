@@ -21,8 +21,8 @@ const sanitizeData = ({ frameCount, time }: ThreadMeasure) => {
   };
 };
 
-const INTERVAL = 500;
-const ERROR_MARGIN = 50;
+const INTERVAL = 1000;
+const ERROR_MARGIN = 500;
 
 const splitMeasure = (measure: ThreadMeasure): ThreadMeasure[] => {
   /**
