@@ -5,6 +5,11 @@ def safeExtGet(prop, fallback) {
 }
 
 android {
+    def agpVersion = com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION
+    if (apgVersion.tokenize('.')[0].toInteger() >= 7) {
+        namespace "tech.bam.rnperformance.flipper"
+    }
+
     compileSdkVersion safeExtGet('compileSdkVersion', 30)
     buildToolsVersion safeExtGet('buildToolsVersion', '30.0.2')
 
